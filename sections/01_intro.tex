@@ -1,0 +1,158 @@
+\section{Introduction}
+\label{sec:intro}
+
+High-dimension, low-sample-size (HDLSS) data situations occur in many areas of modern
+science such as genetic microarrays, medical imaging, text recognition, finance and
+chemometrics. In such data situations, the dimension $d$ is much larger than the sample
+size $N$, so that the conventional multivariate procedures based on the large sample
+asymptotic theory do not work.
+
+Suppose we have independent and $d$-variate two populations, $\pi_i$, $i=1,2$, having
+an unknown mean vector $\mu_i$ and unknown covariance matrix $\Sigma_i\succeq O$.
+We have independent and identically distributed (i.i.d.) observations,
+$x_{ij}$, $j=1,\dots,n_i$, from each $\pi_i$. We assume $n_i\ge 1$
+($i=1,2$); the case $n_1=n_2=1$ is treated explicitly in Section~\ref{sec:example}.
+Let $x_0$ be an observation vector of an individual belonging to one of the two
+populations. We assume $x_0$ and $x_{ij}$'s are independent. Let
+$N=n_1+n_2$ and $\Delta=\|\mu_1-\mu_2\|^2$, where $\|\cdot\|$ denotes the Euclidean
+norm. Let $e(i)$ denote the error rate of misclassifying an individual from $\pi_i$
+into the other class. We say that a classifier holds the consistency property if
+\begin{equation}
+e(1)+e(2)\longrightarrow 0
+\quad\text{as }d\to\infty.
+\label{eq:1.1}
+\end{equation}
+In the HDLSS context, \citet{hall2005} and \citet{marron2007} considered distance
+weighted classifiers. \citet{chan2009} and \citet{aoshima2011} considered
+distance-based classifiers. In particular, \citet{aoshima2011} gave the
+misclassification rate adjusted classifier for multiclass, high-dimensional data in
+which misclassification rates are no more than specified thresholds. On the other
+hand, \citet{aoshima2014,aoshima2019} considered geometric classifiers based on a
+geometric representation of HDLSS data, and discussed asymptotic properties and
+optimality of the classifiers under high-dimension, non-sparse settings.
+
+In the field of machine learning, a typical method of classification is the support
+vector machine (SVM). Since HDLSS data are mostly separable by a hyperplane, one
+usually considers the hard-margin SVM in the HDLSS context. For the linear SVM,
+\citet{hall2005}, \citet{chan2009} and \citet{qiao2015} showed that the
+misclassification rates tend to zero as $d\to\infty$ under certain severe conditions.
+\citet{nakayama2017} investigated asymptotic properties of the linear SVM for HDLSS
+data. They showed that the linear SVM is heavily biased when $n_1\neq n_2$, and that
+the bias causes the strong inconsistency in which the misclassification rate tends to
+one. In order to overcome such difficulties, they proposed a bias-corrected linear
+SVM (BC-SVM) and showed that it holds the consistency property even for imbalanced
+data. \citet{nakayama2020} investigated asymptotic properties of the SVM with the
+Gaussian kernel and gave a choice of the scale parameter involved in the kernel.
+\citet{nakayama2021,nakayama2022} considered the SVM for high-dimensional imbalanced
+data in more general frameworks.
+
+\subsection{The geometric representation and its limitation}
+
+The above studies on the SVM rely on the geometric representation of HDLSS data.
+Let $\theta_i=\tr(\Sigma_i)$ and $\theta=(\theta_1+\theta_2)/2$. Under the condition
+\begin{equation}
+\frac{\tr(\Sigma_i^2)}{\theta_i^2}\to 0
+\quad\text{as }d\to\infty,
+\label{eq:1.2}
+\end{equation}
+together with mild moment conditions, \citet{hall2005} and \citet{ahn2007} showed that
+\[
+\frac{\|x_{ij}-x_{ik}\|^2}{\theta_i}=2+o_P(1)\quad(j\neq k),
+\qquad
+\frac{\|x_{1j}-x_{2k}\|^2}{\theta}
+=\frac{\theta_1+\theta_2}{\theta}+\frac{\Delta}{\theta}+o_P(1).
+\]
+That is, after rescaling by $\sqrt{\theta}$, all the observations are located at the
+vertices of a regular simplex whose edge lengths are determined only by $\theta_i$
+and $\Delta$. The randomness of the data vanishes in the limit. This deterministic
+structure is the reason why the solution of the hard-margin SVM can be written in a
+closed form in the HDLSS context, and why the discriminant function is described only
+by $\Delta$ and
+\begin{equation}
+\kappa=\frac{\tr(\Sigma_1)}{n_1}-\frac{\tr(\Sigma_2)}{n_2}.
+\label{eq:1.3}
+\end{equation}
+The quantity $\kappa$ is the bias term that the BC-SVM subtracts.
+
+However, the condition~\eqref{eq:1.2} requires that the largest eigenvalue
+$\lambda_{i1}$ of $\Sigma_i$ is negligible compared with $\theta_i$, since
+$\lambda_{i1}^2\le\tr(\Sigma_i^2)$. In actual high-dimensional data such as gene
+expression data, on the other hand, the eigenvalue structure is often spiked in the
+sense that a few eigenvalues are much larger than the others and carry a substantial
+proportion of the total variance. \citet{yata2012,yata2013} investigated HDLSS
+asymptotic properties of the principal component analysis (PCA) under such spiked
+models and proposed the noise-reduction (NR) methodology, which gives consistent
+estimation of the spiked eigenvalues and eigenvectors when the sample size grows.
+\citet{jung2009} showed that the sample principal component directions are
+inconsistent when the spiked eigenvalue is of the same order as the trace and the
+sample size is fixed.
+
+Thus a natural question arises: what happens to the SVM in HDLSS settings when the
+covariance matrices have dominant eigenvalues? To the best of our knowledge, this
+question has not been studied. Since the geometric representation is the foundation
+of the existing theory, we cannot expect that the known results carry over.
+
+\subsection{Contributions of this paper}
+
+In this paper, we consider asymptotic properties of the SVM in HDLSS settings under
+a spiked model in which
+\begin{equation}
+\frac{\lambda_{is}}{\theta}\longrightarrow c_{is}\in(0,1),
+\quad s=1,\dots,m_i,
+\label{eq:1.4}
+\end{equation}
+where $m_i$ is a fixed integer. Our contributions are summarized as follows.
+
+\begin{enumerate}[label=(\roman*)]
+\item We show that the geometric representation does not hold under~\eqref{eq:1.4}.
+We show that the Gram matrix of the rescaled data converges in distribution to a
+random matrix, and we give its explicit form (Theorem~\ref{thm:1}). Moreover, we
+show that the limiting Gram matrix is realized as the Gram matrix of an explicit
+family of vectors in $\R^{1+m_1+m_2}$ (Lemma~\ref{lem:6}), namely, the HDLSS data
+converge to a random configuration in a finite-dimensional space together with $N$
+mutually orthogonal noise axes. We call this result the limiting configuration
+theorem.
+
+\item We show that the solution of the hard-margin SVM converges in distribution to
+the solution of the limiting problem (Theorem~\ref{thm:2}), and that the discriminant
+function converges in distribution to a non-degenerate random variable
+(Theorem~\ref{thm:3}). Consequently, we show that the misclassification rates do not
+tend to zero, that is, the SVM does not hold the consistency property
+(Corollary~\ref{cor:1}). We emphasize that this inconsistency is different from the
+strong inconsistency of \citet{nakayama2017}, in which the misclassification rate
+tends to one. Here the misclassification rate tends neither to zero nor to one.
+
+\item We give an example in which the limiting misclassification rate is obtained in
+a closed form (Theorem~\ref{thm:4}). We show that a spike degrades the performance of
+the SVM even when it is orthogonal to the mean difference. This phenomenon cannot
+be observed in the existing theory.
+
+\item We show that the bias term should be modified from~\eqref{eq:1.3} to
+$\kappa_*=\tr(\Sigma_{1*})/n_1-\tr(\Sigma_{2*})/n_2$, where $\Sigma_{i*}$ denotes
+the non-spiked part of $\Sigma_i$ (Proposition~\ref{prop:1}). We show that the
+BC-SVM overcorrects the bias under the spiked model.
+
+\item In order to overcome such difficulties, we propose a spike-corrected SVM
+(SC-SVM), which removes the uninformative spiked directions by the NR methodology
+and applies the BC-SVM with the modified bias term. We show that the SC-SVM holds
+the consistency property when $n_i\to\infty$ (Theorem~\ref{thm:5}). On the other
+hand, we show that any projection-based procedure does not hold the consistency
+property when $N$ is fixed (Proposition~\ref{prop:3}), so that the growth of the
+sample size is essential.
+
+\item Finally, we check the performance of the classifiers by numerical simulations.
+\end{enumerate}
+
+The rest of the paper is organized as follows. In Section~\ref{sec:notation}, we
+give the notation and the assumptions. In Section~\ref{sec:inner}, we investigate
+asymptotic behaviour of the inner products of HDLSS data under the spiked model.
+In Section~\ref{sec:config}, we give the limiting configuration theorem. In
+Section~\ref{sec:svm}, we show the convergence of the SVM. In
+Section~\ref{sec:disc}, we give the limit of the discriminant function and the
+inconsistency. In Section~\ref{sec:example}, we give the explicit example. In
+Section~\ref{sec:bias}, we give the modified bias term. In
+Section~\ref{sec:scsvm}, we propose the SC-SVM. In Section~\ref{sec:fixed}, we
+discuss the case that $N$ is fixed. In Section~\ref{sec:sim}, we give numerical
+simulations. In Section~\ref{sec:conclude}, we give concluding remarks. The
+mathematical tools used in Sections~\ref{sec:svm} and~\ref{sec:disc} are summarized
+in Appendix~\ref{app:A}.

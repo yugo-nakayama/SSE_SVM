@@ -1,0 +1,48 @@
+\section{The case that the sample size is fixed}
+\label{sec:fixed}
+
+Theorem~\ref{thm:5} requires $n_i\to\infty$. We show that this is not a technical
+restriction but is essential.
+
+\begin{proposition}
+\label{prop:3}
+Assume \textup{(E)} with $c\in(0,1)$ fixed and let $N$ be fixed. Consider any
+procedure which uses a projection $\hat P$ of fixed rank estimated from the
+training data. Then the angle between $\hat h$ and the true spiked direction $h$
+does not tend to zero, that is, $|\hat h^Th|\to\varrho<1$ in probability. Hence
+the residual spiked component of the new observation after the projection
+satisfies
+\[
+\bigl\|(I-\hat h\hat h^T)\sqrt{\lambda}\,z_0 h\bigr\|^2
+=\lambda z_0^2(1-\varrho^2)+o_P(\theta)=O_P(\theta),
+\]
+so that the spike cannot be removed by the projection and the projection-based
+SC-SVM does not hold the consistency property.
+\end{proposition}
+
+\begin{proof}[Outline of proof]
+The region $\lambda/\tr(\Sigma_*)\to c/(1-c)\in(0,\infty)$ corresponds to the
+subspace inconsistency region in the HDLSS PCA theory of \citet{jung2009}, in
+which the sample principal component direction is not consistent and the angle has
+a non-degenerate limit. Intuitively, the information about the spiked direction
+contained in the sample consists of the $N$ coefficients $\{z_{ijs}\}$ only, on
+which the isotropic noise of order $\sqrt{\tr(\Sigma_*)}$ is superposed, so that
+the signal-to-noise ratio remains a constant when $N$ is fixed. Since the
+estimation error of $\hat h$ remains at a constant proportion, the spiked
+component $\sqrt{\lambda}\,z_0 h$ of $x_0$, whose magnitude is of order
+$\sqrt{\theta}$, also remains at a constant proportion after the projection. Then
+the argument of Theorem~\ref{thm:3} is applicable and the misclassification rate
+does not tend to zero.
+\end{proof}
+
+\begin{remark}
+\label{rem:7}
+Proposition~\ref{prop:3} is a statement about the class of projection-based
+procedures. We have not proved a minimax type lower bound which states that any
+classification rule based on the training data does not hold the consistency
+property when $N$ is fixed and $\delta<\infty$. We expect that it is reduced to the
+positivity of the Bayes risk in the limiting experiment given in
+Theorem~\ref{thm:1}, but it remains open. On the other hand, when $\delta\to\infty$,
+we can see from~\eqref{eq:7.2} that the consistency property is recovered even for
+fixed $N$.
+\end{remark}

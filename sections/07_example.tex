@@ -1,0 +1,111 @@
+\section{An example with an explicit limit}
+\label{sec:example}
+
+In this section, we give an example in which the limiting misclassification rate is
+obtained in a closed form. We consider the following setting.
+
+\begin{enumerate}[label=(E),leftmargin=*]
+\item Let $n_1=n_2=1$, $\theta_1=\theta_2=\theta$ and $m_1=m_2=1$. The two
+populations have a common spiked direction $h$ with
+$\lambda_{11}=\lambda_{21}=\lambda=c\theta$, so that $r_{11}=1$. The spike is
+orthogonal to the mean difference, that is, $h\perp\mu$ or equivalently
+$\beta_{11}=\beta_{21}=0$. We have $c_{10}=c_{20}=1-c$ and $z$'s are standard
+normal.
+\end{enumerate}
+
+\begin{theorem}
+\label{thm:4}
+Assume \textup{(E)}. Then, for $x_0\in\pi_1$, it holds that
+\begin{equation}
+\frac{y(x_0)}{\theta}
+\wto
+\frac{\delta}{2}+c(z_1-z_2)\Bigl(z_0-\frac{z_1+z_2}{2}\Bigr),
+\label{eq:7.1}
+\end{equation}
+and, putting $A=c(z_1-z_2)$, the limiting conditional misclassification rate is
+given by
+\begin{equation}
+e^*(1)=\Phi\Bigl(\sgn(A)\frac{z_1+z_2}{2}-\frac{\delta}{2|A|}\Bigr),
+\label{eq:7.2}
+\end{equation}
+where $\Phi$ denotes the standard normal distribution function and $z_1,z_2$ are
+i.i.d.\ standard normal.
+\end{theorem}
+
+\begin{proof}
+(i) When each class has one observation, the hard-margin SVM is the perpendicular
+bisector of the two points. Indeed, putting $w=x_{11}-x_{21}$ and
+$b=-w^T(x_{11}+x_{21})/2$, we have $y_p(w^Tx_p+b)=1$ for $p\in\cI$, and the
+maximality of the margin is easily checked. Hence
+\begin{equation}
+y(x_0)=(x_{11}-x_{21})^Tx_0-\frac{\|x_{11}\|^2-\|x_{21}\|^2}{2},
+\label{eq:7.3}
+\end{equation}
+where we used $w^Tx_0+b=(x_{11}-x_{21})^Tx_0-\|x_{11}\|^2/2+\|x_{21}\|^2/2$.
+
+(ii) We take the origin at $(\mu_1+\mu_2)/2$, so that $\mu_1=\mu/2$ and
+$\mu_2=-\mu/2$. Under~(E) we have
+\[
+x_{11}=\tfrac{\mu}{2}+\sqrt{\lambda}\,z_1 h+\xi_1,\quad
+x_{21}=-\tfrac{\mu}{2}+\sqrt{\lambda}\,z_2 h+\xi_2,\quad
+x_0=\tfrac{\mu}{2}+\sqrt{\lambda}\,z_0 h+\xi_0,
+\]
+so that $(x_{11}-x_{21})^Tx_0=\Delta/2+\lambda(z_1-z_2)z_0+o_P(\theta)$. Using
+$h\perp\mu$ and $h\perp\xi_i$, and noting that all the cross terms are $o_P(\theta)$
+from Lemmas~\ref{lem:2} and~\ref{lem:3} and Step~6 of the proof of
+Theorem~\ref{thm:3}, we obtain
+\[
+(x_{11}-x_{21})^Tx_0=\frac{\Delta}{2}+\lambda(z_1-z_2)z_0+o_P(\theta).
+\]
+On the other hand, from~\eqref{eq:3.2} we have
+\[
+\|x_{11}\|^2=\frac{\Delta}{4}+\lambda z_1^2+\tr(\Sigma_{1*})+o_P(\theta),\quad
+\|x_{21}\|^2=\frac{\Delta}{4}+\lambda z_2^2+\tr(\Sigma_{2*})+o_P(\theta).
+\]
+Here $\tr(\Sigma_{1*})$ and $\tr(\Sigma_{2*})$ cancel out because $n_1=n_2$ and
+$\theta_1=\theta_2$. We note that, in general, the bias term of the existing theory
+appears at this place. Hence
+\[
+\frac{\|x_{11}\|^2-\|x_{21}\|^2}{2}=\frac{\lambda(z_1^2-z_2^2)}{2}+o_P(\theta).
+\]
+Substituting these into~\eqref{eq:7.3} and dividing by $\theta$, we obtain
+\[
+\frac{y(x_0)}{\theta}
+=\frac{\delta}{2}+c(z_1-z_2)z_0-\frac{c(z_1^2-z_2^2)}{2}+o_P(1),
+\]
+and the factorization $z_1^2-z_2^2=(z_1-z_2)(z_1+z_2)$ gives~\eqref{eq:7.1}.
+
+(iii) Conditioning on $z_1$ and $z_2$, we have $z_0\sim N(0,1)$. Let
+$A=c(z_1-z_2)$. When $A>0$, we have $f^*<0$ if and only if
+$z_0<\sgn(A)(z_1+z_2)/2-\delta/(2|A|)$, so that
+$e^*(1)=\Phi(\sgn(A)(z_1+z_2)/2-\delta/(2|A|))$. When $A<0$, the inequality is
+reversed and
+\[
+e^*(1)=\Phi\Bigl(\sgn(A)\frac{z_1+z_2}{2}-\frac{\delta}{2|A|}\Bigr)
+\]
+still holds. Combining the two cases with $\Phi(-\cdot)=1-\Phi(\cdot)$, we obtain
+\eqref{eq:7.2}.
+\end{proof}
+
+\subsection{Interpretation}
+
+The right-hand side of~\eqref{eq:7.1} is the sum of the signal $\delta/2$ coming
+from the mean difference and the nearest centroid rule
+$c(z_1-z_2)(z_0-(z_1+z_2)/2)$ in the one-dimensional spiked coordinate. That is,
+the high dimensionality vanishes except for the spiked direction, and what remains
+is a classical small-sample problem in one dimension with $N=2$ observations. We
+give the following observations.
+
+\begin{enumerate}[label=(\roman*)]
+\item When $c\to 0$, which corresponds to the non-spiked case, we have $A\to 0$ and
+hence $e^*(1)\to 0$ when $\delta>0$, so that $E\{e^*(1)\}\to 0$. That is, the
+consistency property of the existing theory is recovered.
+
+\item When $\delta=0$, we have $e^*(1)=\Phi(\sgn(A)(z_1+z_2)/2)$, whose expectation
+is $1/2$. That is, the classification is completely random.
+
+\item The misclassification rate increases as $c$ increases. We emphasize that the
+spike degrades the performance even though it is orthogonal to the mean difference,
+so that it carries no information about the classification. This phenomenon cannot
+be observed in the existing theory.
+\end{enumerate}

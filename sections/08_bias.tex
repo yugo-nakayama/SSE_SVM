@@ -1,0 +1,50 @@
+\section{Modification of the bias term}
+\label{sec:bias}
+
+The BC-SVM of \citet{nakayama2017} subtracts the bias term $\kappa$ in
+\eqref{eq:1.3}, which comes from the geometric representation. On the other hand,
+Theorem~\ref{thm:1} shows that the deterministic part of the limiting Gram matrix
+is the diagonal matrix $D$ whose components are $c_{i0}=\lim\tr(\Sigma_{i*})/\theta$,
+that is, only the trace of the non-spiked part. The spiked part
+$\sum_{s\le m_i}\lambda_{is}$ does not have a deterministic limit.
+
+\begin{proposition}
+\label{prop:1}
+Assume \textup{(A1)} to \textup{(A4)} and \textup{(S)}. Then the deterministic
+offset term of the discriminant function is given by
+\[
+\kappa_*=\frac{\tr(\Sigma_{1*})}{n_1}-\frac{\tr(\Sigma_{2*})}{n_2}
+=\kappa-\Biggl(
+\frac{1}{n_1}\sum_{s\le m_1}\lambda_{1s}
+-\frac{1}{n_2}\sum_{s\le m_2}\lambda_{2s}
+\Biggr).
+\]
+Hence the BC-SVM, which uses an estimator of $\tr(\Sigma_i)$ including the spikes,
+overcorrects the bias by
+$\sum_{s\le m_1}\lambda_{1s}/n_1-\sum_{s\le m_2}\lambda_{2s}/n_2$, which is of
+order $\theta$ and is not negligible compared with the signal $\Delta=O(\theta)$.
+\end{proposition}
+
+\begin{proof}[Outline of proof]
+We expand the discriminant function for general $n_1$ and $n_2$ in the same way as
+\eqref{eq:7.3}. Since $w=\sum_p\alpha_p y_p u_p$, the deterministic term of the
+discriminant function comes from the diagonal part $D$ of Theorem~\ref{thm:1}
+through the Karush--Kuhn--Tucker conditions, and it has the form
+$\sum_p\alpha_p^* y_p\cdot(\text{diagonal of }D)$. In the existing theory,
+$\theta_i$'s are equalized within each class and this gives the form $\kappa$ in
+\eqref{eq:1.3}. Under the spiked model, the diagonal term is
+$\tr(\Sigma_{i*})/\theta$ from~\eqref{eq:3.2} and not $\tr(\Sigma_i)/\theta$, so
+that the replacement occurs. The difference is
+$\tr(\Sigma_i)-\tr(\Sigma_{i*})=\sum_{s\le m_i}\lambda_{is}$ by definition.
+\end{proof}
+
+\begin{remark}
+\label{rem:6}
+Spiked eigenvalue structures are commonly observed in actual high-dimensional data
+such as gene expression data. Proposition~\ref{prop:1} suggests that, when the
+BC-SVM is applied to such data, the bias correction works too strongly and the
+separating hyperplane is shifted excessively towards the minority class. We can
+expect an improvement by replacing the estimator of $\tr(\Sigma_i)$ with
+$\tr(\Sigma_i)-\sum_{s\le\hat m_i}\tilde\lambda_{is}$, where $\tilde\lambda_{is}$
+denotes the estimator of the spiked eigenvalue given by the NR methodology.
+\end{remark}

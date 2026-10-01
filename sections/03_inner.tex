@@ -1,0 +1,137 @@
+\section{Asymptotic behaviour of inner products}
+\label{sec:inner}
+
+In this section, we investigate asymptotic behaviour of the inner products of HDLSS
+data under the spiked model. In the existing theory, the inner products have
+deterministic limits. On the other hand, under the spiked model, they have random
+limits. This is the source of all the results in this paper.
+
+We write $v_{ij}=\sum_{s\le m_i}\sqrt{\lambda_{is}}z_{ijs}h_{is}$ for the spiked
+part and $\xi_{ij}=\sum_{s>m_i}\sqrt{\lambda_{is}}z_{ijs}h_{is}$ for the
+non-spiked part, so that $x_{ij}-\mu_i=v_{ij}+\xi_{ij}$.
+
+\begin{lemma}
+\label{lem:1}
+Assume \textup{(A1)}, \textup{(A2)} and \textup{(S)}. Then, for $j\neq k$, it holds
+that
+\begin{equation}
+\frac{(x_{ij}-\mu_i)^T(x_{ik}-\mu_i)}{\theta}
+=\sum_{s=1}^{m_i}\frac{\lambda_{is}}{\theta}z_{ijs}z_{iks}+o_P(1).
+\label{eq:3.1}
+\end{equation}
+\begin{equation}
+\frac{\|x_{ij}-\mu_i\|^2}{\theta}
+=\sum_{s=1}^{m_i}\frac{\lambda_{is}}{\theta}z_{ijs}^2+\frac{\tr(\Sigma_{i*})}{\theta}+o_P(1).
+\label{eq:3.2}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+From~\eqref{eq:2.1} and $h_{is}^T h_{it}=\delta_{st}$, we have
+\[
+(x_{ij}-\mu_i)^T(x_{ik}-\mu_i)=\sum_{s=1}^d\lambda_{is}z_{ijs}z_{iks}.
+\]
+We divide the sum into $s\le m_i$ and $s>m_i$, and write
+$R=\sum_{s>m_i}\lambda_{is}z_{ijs}z_{iks}$. Since $z_{ijs}$ and $z_{iks}$ are
+independent for $j\neq k$, we have $E(R)=0$, so that
+$\mathrm{Var}(R)=E(R^2)$. From~(A1) it holds that
+\[
+\mathrm{Var}(R)=\tr(\Sigma_{i*}^2).
+\]
+Then, from Chebyshev's inequality, for any $\varepsilon>0$ it holds that
+\[
+P\bigl(|R|/\theta>\varepsilon\bigr)
+\le\frac{\tr(\Sigma_{i*}^2)}{\varepsilon^2\theta^2}\to 0
+\]
+from~(S). Thus we obtain~\eqref{eq:3.1}.
+
+Next, we have $\|x_{ij}-\mu_i\|^2=\sum_{s=1}^d\lambda_{is}z_{ijs}^2$. Let
+$Q=\sum_{s>m_i}\lambda_{is}z_{ijs}^2$. Then $E(Q)=\tr(\Sigma_{i*})$. From~(A1) we
+have $E(z_{ijs}^4)\le M$ for $s>m_i$ and $E(z_{ijs}^2 z_{ijt}^2)=1$ for $s\neq t$,
+so that
+\[
+\mathrm{Var}(Q)\le(M-1)\tr(\Sigma_{i*}^2)=o(\theta^2).
+\]
+Thus we obtain~\eqref{eq:3.2} from Chebyshev's inequality.
+\end{proof}
+
+\begin{lemma}
+\label{lem:2}
+Assume \textup{(A1)}, \textup{(A2)} and \textup{(S)}. Then, for any $j$ and $k$,
+it holds that
+\[
+\frac{(x_{1j}-\mu_1)^T(x_{2k}-\mu_2)}{\theta}
+=\sum_{s=1}^{m_1}\sum_{t=1}^{m_2}\frac{\sqrt{\lambda_{1s}\lambda_{2t}}}{\theta}\rho_{st}\,z_{1js}z_{2kt}+o_P(1).
+\]
+\end{lemma}
+
+\begin{proof}
+We have
+\[
+(x_{1j}-\mu_1)^T(x_{2k}-\mu_2)
+=v_{1j}^Tv_{2k}+v_{1j}^T\xi_{2k}+\xi_{1j}^Tv_{2k}+\xi_{1j}^T\xi_{2k}.
+\]
+The first term is the finite sum in the statement. We evaluate the other terms.
+
+As for $v_{1j}^T\xi_{2k}$, by conditioning on $v_{1j}$ we have
+$E(v_{1j}^T\xi_{2k}\mid v_{1j})=0$ and
+\[
+\mathrm{Var}(v_{1j}^T\xi_{2k}\mid v_{1j})=v_{1j}^T\Sigma_{2*}v_{1j}.
+\]
+Here $v_{1j}^T\Sigma_{2*}v_{1j}=O_P(\theta\cdot\tr(\Sigma_{2*})/d\cdot\theta)$ is
+controlled because $m_1$ is fixed and $\tr(\Sigma_{2*}^2)/\theta^2\to 0$. Since
+$\|v_{1j}\|^2=O_P(\theta)$, the conditional variance is $o_P(\theta^2)$, so that
+$v_{1j}^T\xi_{2k}=o_P(\theta)$. The term $\xi_{1j}^Tv_{2k}$ is handled in the same
+way.
+
+As for $\xi_{1j}^T\xi_{2k}$, from the independence we have
+$E(\xi_{1j}^T\xi_{2k})=0$ and
+\begin{equation}
+E[(\xi_{1j}^T\xi_{2k})^2]=\tr(\Sigma_{1*}\Sigma_{2*})
+\le\sqrt{\tr(\Sigma_{1*}^2)\tr(\Sigma_{2*}^2)}=o(\theta^2),
+\label{eq:3.3}
+\end{equation}
+where we used the Cauchy--Schwarz inequality for the trace of the product of
+non-negative definite matrices. Thus we obtain the result.
+\end{proof}
+
+\begin{lemma}
+\label{lem:3}
+Assume \textup{(A1)}, \textup{(A2)}, \textup{(S)} and \textup{(A3)} with
+$\Delta>0$. Then it holds that
+\[
+\frac{\mu^T(x_{ij}-\mu_i)}{\theta}
+=\frac{\sqrt{\Delta}}{\theta}\sum_{s=1}^{m_i}\sqrt{\lambda_{is}}\,b_{is}z_{ijs}+o_P(1)
+\longrightarrow
+\sqrt{\delta}\sum_{s=1}^{m_i}\sqrt{c_{is}}\,\beta_{is}z_{ijs}.
+\]
+\end{lemma}
+
+\begin{proof}
+From the definition of $b_{is}$ we have
+$\mu^T(x_{ij}-\mu_i)=\sqrt{\Delta}\sum_{s=1}^d\sqrt{\lambda_{is}}\,b_{is}z_{ijs}$.
+Let $R=\sqrt{\Delta}\sum_{s>m_i}\sqrt{\lambda_{is}}\,b_{is}z_{ijs}$. Then
+$E(R)=0$ and
+\[
+\mathrm{Var}(R)=\Delta\sum_{s>m_i}\lambda_{is}b_{is}^2
+\le\Delta\cdot\frac{\tr(\Sigma_{i*}^2)^{1/2}}{\theta}\cdot\theta
+\cdot o(1),
+\]
+where we used $\sum_{s>m_i}b_{is}^2\lambda_{is}\le\|\mu\|^2\cdot o(1)$ from~(A3)
+together with $\lambda_{i,m_i+1}/\theta\to 0$. Thus $R/\theta=o_P(1)$. The
+convergence of the leading term follows from $\Delta/\theta\to\delta$,
+$\lambda_{is}/\theta\to c_{is}$ and $b_{is}\to\beta_{is}$.
+\end{proof}
+
+\begin{remark}
+\label{rem:1}
+Lemma~\ref{lem:1} shows the essential difference from the existing theory. Under
+\eqref{eq:1.2}, one has $m_i=0$ in effect and the right-hand side of~\eqref{eq:3.1}
+vanishes, so that the inner product of two distinct observations converges to a
+constant. Under~(S), however, the limit $\sum_{s\le m_i}c_{is}z_{ijs}z_{iks}$ is a
+non-degenerate random variable. We emphasize that the term
+$\tr(\Sigma_{i*})/\theta$ in~\eqref{eq:3.2} appears only for the squared norm,
+namely, only when the two observations coincide. This asymmetry
+between~\eqref{eq:3.1} and~\eqref{eq:3.2} plays a crucial role in
+Section~\ref{sec:disc}.
+\end{remark}

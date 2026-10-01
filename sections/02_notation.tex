@@ -1,0 +1,88 @@
+\section{Notation and assumptions}
+\label{sec:notation}
+
+\subsection{Notation}
+
+We consider the spectral decomposition
+\[
+\Sigma_i=H_i\Lambda_i H_i^T,\quad
+\Lambda_i=\diag(\lambda_{i1},\dots,\lambda_{id}),\quad
+\lambda_{i1}\ge\cdots\ge\lambda_{id}\ge 0,
+\]
+where $H_i=[h_{i1},\dots,h_{id}]$ is an orthogonal matrix. We write
+\begin{equation}
+x_{ij}=\mu_i+\sum_{s=1}^d\sqrt{\lambda_{is}}\,z_{ijs}\,h_{is},
+\quad j=1,\dots,n_i,
+\label{eq:2.1}
+\end{equation}
+where $z_{ijs}$'s are random variables such that $E(z_{ijs})=0$ and
+$\mathrm{Var}(z_{ijs})=1$. We use the same expression for $x_0$ and write its
+coefficients as $z_{0s}$. Let $\mu=\mu_1-\mu_2$. We write $y_{1j}=+1$ and
+$y_{2j}=-1$ for the labels, and put $\eps_1=+1$ and $\eps_2=-1$. Throughout this
+paper we consider the HDLSS asymptotic framework $d\to\infty$. In
+Sections~\ref{sec:inner} to~\ref{sec:bias} and Section~\ref{sec:fixed}, $n_1$ and
+$n_2$ are fixed.
+
+We regard the double index $(i,j)$ as a single index and put
+\begin{equation}
+\cI=\{(1,1),\dots,(1,n_1),(2,1),\dots,(2,n_2)\},
+\quad|\cI|=N.
+\label{eq:2.2}
+\end{equation}
+Vectors indexed by $\cI$, such as the dual variable $\alpha=(\alpha_{ij})$ and the
+label vector $y=(y_{ij})$, are arranged in this order, and matrices indexed by
+$\cI\times\cI$ are $N\times N$. We write $p,q\in\cI$ when a single index suffices.
+
+\subsection{Assumptions}
+
+We assume the following conditions.
+
+\begin{enumerate}[label=(A\arabic*),leftmargin=*]
+\item For each $i$ and $j$, it holds that $E(z_{ijs}^4)\le M<\infty$ for a constant
+$M$ not depending on $d$, and that $E(z_{ijs}^2 z_{ijt}^2)=1$ for $s\neq t$ and
+$E(z_{ijs}z_{ijt}z_{iju}z_{ijv})=0$ for distinct $s,t,u,v$.
+
+\item Let $\theta_i=\tr(\Sigma_i)$ and $\theta=(\theta_1+\theta_2)/2$. It holds that
+$\theta_i\to\infty$ and $\theta_i/\theta\to\gamma_i\in(0,\infty)$, where
+$\gamma_1+\gamma_2=2$.
+\end{enumerate}
+
+\begin{enumerate}[label=(S),leftmargin=*]
+\item There exist fixed integers $m_i\ge 1$ such that~\eqref{eq:1.4} holds. Let
+$\Sigma_{i*}=\sum_{s>m_i}\lambda_{is}h_{is}h_{is}^T$ be the non-spiked part. It
+holds that $\tr(\Sigma_{i*}^2)/\theta^2\to 0$ and
+$\tr(\Sigma_{i*})/\theta\to c_{i0}>0$.
+\end{enumerate}
+
+\begin{enumerate}[label=(A\arabic*),leftmargin=*,start=3]
+\item It holds that $\Delta/\theta\to\delta\in[0,\infty)$. When $\Delta>0$, it
+holds that
+\[
+b_{is}=\frac{h_{is}^T\mu}{\sqrt{\Delta}}\to\beta_{is}\quad(s\le m_i),
+\qquad
+\rho_{st}=h_{1s}^T h_{2t}\to r_{st}\quad(s\le m_1,\ t\le m_2).
+\]
+
+\item Let
+$Z^{(d)}=(\{z_{ijs}\}_{(i,j)\in\cI,\,s\le m_i},\{z_{0s}\}_{s\le m_1})\in\R^L$,
+where $L=n_1 m_1+n_2 m_2+m_1$. The distribution of $Z^{(d)}$ converges in
+distribution to a distribution $\mathcal{L}_Z$ as $d\to\infty$. We denote by $Z$ a
+random vector distributed as $\mathcal{L}_Z$.
+\end{enumerate}
+
+The condition~(A1) is standard in this context and is met by Gaussian populations.
+The condition~(A2) is a normalization. The condition~(S) is the spiked model. Note
+that $\sum_{s\le m_i}c_{is}+c_{i0}=\gamma_i$, and that
+$\lambda_{i,m_i+1}/\theta\to 0$ because $\lambda_{i,m_i+1}^2\le\tr(\Sigma_{i*}^2)$.
+We use this fact repeatedly.
+
+The condition~(A3) is not restrictive because $|b_{is}|\le 1$ and $|\rho_{st}|\le 1$
+hold from the Cauchy--Schwarz inequality, so that convergent subsequences always
+exist. We assume $\delta<\infty$ throughout. When $\delta=\infty$, the signal is
+much stronger than the spikes and the difficulties discussed in this paper
+disappear.
+
+The condition~(A4) is required so that the limiting objects in the subsequent
+sections are well defined. Since $n_i$ is fixed, (A4) is met automatically when the
+distribution of $z_{ijs}$ does not depend on $d$. Hereafter, $z_{ijs}$ and $z_{0s}$
+appearing in the limiting quantities denote the components of $Z$.

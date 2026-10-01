@@ -1,0 +1,143 @@
+\section{Mathematical tools}
+\label{app:A}
+
+In this appendix, we summarize the two tools used in Sections~\ref{sec:svm}
+and~\ref{sec:disc}. Both of them are standard, but we give their intuitive meanings
+and explain why they are necessary in this paper.
+
+\subsection{The maximum theorem of Berge}
+\label{app:A.1}
+
+\begin{theorem}[Berge, 1963]
+\label{thm:A.1}
+Let $\Theta$ and $X$ be metric spaces, let $C:\Theta\rightrightarrows X$ be a
+continuous correspondence with non-empty compact values, and let
+$F:X\times\Theta\to\R$ be a continuous function. Put
+\[
+v(\vartheta)=\sup_{x\in C(\vartheta)}F(x,\vartheta),\qquad
+M(\vartheta)=\arg\max_{x\in C(\vartheta)}F(x,\vartheta).
+\]
+Then $v$ is continuous and $M$ is upper hemicontinuous with non-empty compact
+values. The upper hemicontinuity is written as
+\begin{equation}
+\vartheta_n\to\vartheta,\quad x_n\in M(\vartheta_n),\quad x_n\to x
+\implies x\in M(\vartheta).
+\label{eq:A.1}
+\end{equation}
+\end{theorem}
+
+The content of the theorem is stated in one sentence as follows: the optimal value
+moves continuously, while the optimal solution may jump, but the point to which it
+jumps always belongs to the solution set of the limiting problem.
+
+We give a minimal example. Let $X=\R$, $\Theta=\R$, $C(\vartheta)=[-1,1]$ and
+$F(x,\vartheta)=\vartheta x$. Then $v(\vartheta)=|\vartheta|$ is continuous, while
+\[
+M(\vartheta)=\begin{cases}
+\{1\} & \text{if }\vartheta>0,\\
+[-1,1] & \text{if }\vartheta=0,\\
+\{-1\} & \text{if }\vartheta<0,
+\end{cases}
+\]
+so that the optimal solution jumps from $\{1\}$ to $\{-1\}$ at $\vartheta=0$.
+Nevertheless~\eqref{eq:A.1} holds, because for $\vartheta_n\to 0$ we have
+$x_n\in M(\vartheta_n)$ and indeed $x\in M(0)=[-1,1]$. That is, the upper
+hemicontinuity states that the solution never appears at an irrelevant place, while
+it allows the solution set to expand suddenly.
+
+\begin{corollary}
+\label{cor:A.1}
+In the situation of Theorem~\ref{thm:A.1}, assume in addition that $M(\vartheta)$
+is a singleton for each $\vartheta$. Then the map $\vartheta\mapsto M(\vartheta)$
+is continuous.
+\end{corollary}
+
+\begin{proof}
+Let $\vartheta_n\to\vartheta$ and $x_n=M(\vartheta_n)$. Take any subsequence of
+$\{x_n\}$. From the compactness, it has a further subsequence converging to some
+$x$. From~\eqref{eq:A.1} we have $x\in M(\vartheta)$, and from the uniqueness we
+have $x=M(\vartheta)$. That is, every subsequence has a further subsequence
+converging to the same limit $M(\vartheta)$, so that the whole sequence converges
+to $M(\vartheta)$.
+\end{proof}
+
+We explain why this theorem is necessary. The solution of the SVM cannot be
+written as an explicit function of $G$, because the set of the active constraints
+changes with $G$. As long as the active set is fixed, the Karush--Kuhn--Tucker
+conditions form a system of linear equations and one can obtain the
+differentiability by the implicit function theorem. On the boundary at which the
+active set switches, however, the differentiability is lost in general. What we
+need in this paper is not the differentiability but only the continuity, and
+Theorem~\ref{thm:A.1} gives it from the continuity of the objective function and
+the feasible correspondence alone.
+
+In order to apply the theorem, we have to supply the two conditions. As for the
+continuity of the correspondence, we derive the a priori bound $\|\alpha\|\le K_0$
+from the strict concavity and restrict the feasible set to a compact set which
+does not depend on $G$. A constant correspondence is trivially continuous, so that
+the most delicate condition of the theorem is met without any effort. As for the
+uniqueness, we use Lemma~\ref{lem:4}.
+
+\subsection{Fatou's lemma}
+\label{app:A.2}
+
+\begin{theorem}[Fatou's lemma]
+\label{thm:A.2}
+Let $\{f_n\}$ be a sequence of non-negative measurable functions on a measure
+space $(X,\mathcal{F},\nu)$. Then
+\begin{equation}
+\int\liminf_{n\to\infty}f_n\,d\nu
+\le\liminf_{n\to\infty}\int f_n\,d\nu.
+\label{eq:A.2}
+\end{equation}
+\end{theorem}
+
+In the language of probability, for non-negative random variables $\{X_n\}$ it
+holds that $E\{\liminf X_n\}\le\liminf E\{X_n\}$.
+
+The content of the lemma is stated as follows: a non-negative mass may escape in
+the limiting procedure, but it never emerges.
+
+We give the standard example in order not to mistake the direction of the
+inequality. Let $X=[0,1]$ with the Lebesgue measure and $f_n=n\cdot I_{[0,1/n]}$.
+For each $x>0$ we have $f_n(x)=0$ for sufficiently large $n$, so that
+$\liminf f_n=0$ almost everywhere. On the other hand, $\int f_n=1$ for every $n$.
+Hence~\eqref{eq:A.2} is a strict inequality. The mass of one escaped through the
+pointwise convergence as a thin spike of height $n$ and width $1/n$. We note that
+the non-negativity is necessary, because for $g_n=-f_n$ we have
+$\int\liminf g_n=0$ and $\liminf\int g_n=-1$, so that~\eqref{eq:A.2} does not hold.
+
+We explain why this lemma is necessary. In Corollary~\ref{cor:1}, what we have is
+the convergence in distribution $e(1)\wto e^*(1)$ only, which does not imply the
+convergence of the expectation in general. On the other hand, what we need is the
+lower bound $E\{e^*(1)\}\le\liminf E\{e(1)\}$, which is exactly the direction of
+the inequality in~\eqref{eq:A.2}. That is, in order to show the inconsistency, the
+lower bound suffices and Fatou's lemma is enough.
+
+Since~\eqref{eq:A.2} is a statement about the almost sure convergence, we use the
+following bridge.
+
+\begin{lemma}
+\label{lem:7}
+If $X_d\ge 0$ and $X_d\wto X$, then $E\{X\}\le\liminf_d E\{X_d\}$.
+\end{lemma}
+
+\begin{proof}
+From the Skorokhod representation theorem \citep{billingsley1999}, there exist
+random variables $Y_d$ and $Y$ on a common probability space such that $Y_d$ and
+$X_d$ have the same distribution, $Y$ and $X$ have the same distribution, and
+$Y_d\to Y$ almost surely. Applying Theorem~\ref{thm:A.2} to $\{Y_d\}$
+\citep{durrett2019}, we obtain $E\{Y\}\le\liminf E\{Y_d\}$. Since the
+expectation depends only on the distribution, we obtain the result.
+\end{proof}
+
+\begin{remark}
+\label{rem:A.1}
+In our case, we actually have the equality. Since $e(1)$ is a probability, it
+holds that $0\le e(1)\le 1$, that is, the sequence is uniformly bounded. Applying
+the Portmanteau theorem to the identity function on $[0,1]$, we obtain
+$E\{e(1)\}\to E\{e^*(1)\}$. We use Fatou's lemma because the lower bound is what
+we need and because it does not require the uniform boundedness. When one measures
+the error rate in another scale which is not bounded, the lower bound given by
+Fatou's lemma becomes essential.
+\end{remark}

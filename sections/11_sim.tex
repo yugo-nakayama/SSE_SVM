@@ -1,0 +1,365 @@
+\section{Numerical simulations}
+\label{sec:sim}
+
+In this section, we check the performance of the classifiers and the validity of
+the theoretical results by numerical simulations. We give five experiments. In
+Section~\ref{sec:sim-thm4}, we verify Theorem~\ref{thm:4} in the setting~(E). In
+Section~\ref{sec:sim-gram}, we verify the convergence of the Gram matrix given in
+Theorem~\ref{thm:1}. In Section~\ref{sec:sim-inconsist}, we check the inconsistency
+given in Corollary~\ref{cor:1}. In Section~\ref{sec:sim-bias}, we check the bias
+term given in Proposition~\ref{prop:1}. In Section~\ref{sec:sim-classifiers}, we
+compare the classifiers including the SC-SVM.
+
+Throughout this section, the populations are Gaussian and we take the coordinates
+so that the first coordinate is the direction of $\mu$, the next $m_i$ coordinates
+are the spiked directions, which are orthogonal to $\mu$, and the remaining
+coordinates give the isotropic non-spiked part. That is,
+\begin{equation}
+\Sigma_i=\diag(\sigma_i^2,\lambda_{i1},\dots,\lambda_{im_i},\sigma_i^2,\dots,\sigma_i^2),
+\quad
+\lambda_{is}=c_{is}\theta,
+\quad
+\theta=d,
+\label{eq:11.1}
+\end{equation}
+where $\sigma_i^2$ is determined by $\tr(\Sigma_{i*})=\theta\,c_{i0}$. Since
+$\Sigma_i$ is diagonal, we can compute the conditional misclassification rates
+exactly for each realization of the training data, so that we do not need a test
+sample. We give the standard errors of the averages over the replications.
+The code for each experiment is distributed with this manuscript as a separate
+Python script (\texttt{spiked\_svm\_sim.py}, \texttt{spiked\_svm\_gram.py},
+\texttt{spiked\_svm\_inconsistency.py}, \texttt{spiked\_svm\_bias.py},
+\texttt{spiked\_svm\_classifiers.py}), together with the shared utilities in
+\texttt{spiked\_svm\_common.py}.
+
+\subsection{Verification of Theorem~\ref{thm:4}}
+\label{sec:sim-thm4}
+
+We first consider the setting~(E) with $d=20000$, in which the limiting
+misclassification rate is given by~\eqref{eq:7.2} in a closed form. We considered
+$c\in\{0.1,0.3,0.5,0.8\}$ and $\delta\in\{0,1,4\}$, and took the average over
+$600$ replications. We computed the limiting value~\eqref{eq:7.2} by the Monte
+Carlo integration with $2\times 10^5$ points. The implementation is given in
+\texttt{spiked\_svm\_sim.py}. We give the results in
+Table~\ref{tab:2}.
+
+\begin{table}[ht]
+\centering
+\caption{The limiting misclassification rate~\eqref{eq:7.2} and the simulated
+$E\{e(1)\}$ for $d=20000$ in the setting~(E).}
+\label{tab:2}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$c$ & $\delta$ & limit~\eqref{eq:7.2} & simulation & difference \\
+\midrule
+0.1 & 0.0 & 0.5009 & 0.4993 & 0.0016 \\
+0.1 & 1.0 & 0.0112 & 0.0122 & 0.0010 \\
+0.1 & 4.0 & 0.0000 & 0.0000 & 0.0000 \\
+0.3 & 0.0 & 0.5009 & 0.4998 & 0.0011 \\
+0.3 & 1.0 & 0.1093 & 0.1091 & 0.0002 \\
+0.3 & 4.0 & 0.0039 & 0.0047 & 0.0008 \\
+0.5 & 0.0 & 0.5009 & 0.4997 & 0.0012 \\
+0.5 & 1.0 & 0.1833 & 0.1832 & 0.0001 \\
+0.5 & 4.0 & 0.0215 & 0.0225 & 0.0010 \\
+0.8 & 0.0 & 0.5009 & 0.4997 & 0.0012 \\
+0.8 & 1.0 & 0.2517 & 0.2519 & 0.0002 \\
+0.8 & 4.0 & 0.0598 & 0.0602 & 0.0004 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We observe that the differences are smaller than $0.002$ for all the cases, which
+are within the Monte Carlo error whose standard error is about $0.006$ for $600$
+replications. Hence Theorem~\ref{thm:4} is confirmed numerically. When
+$\delta=0$, the misclassification rate is about $0.5$ for all $c$, so that the
+classification is completely random. When $\delta$ is fixed, the misclassification
+rate increases monotonically as $c$ increases. We emphasize that the spike is
+orthogonal to $\mu$ in this setting, so that it carries no information about the
+classification. Nevertheless it degrades the performance of the SVM severely.
+
+\subsection{Convergence of the Gram matrix}
+\label{sec:sim-gram}
+
+Next, we check Theorem~\ref{thm:1} directly. We considered $n_1=n_2=2$, $m_i=1$,
+$c=0.5$ and $\delta=1$, and took $d$ from $10^2$ to $10^6$. In each replication,
+we first generated the spiked coordinates $\{z_{ij1}\}$ and fixed them, and then
+generated the non-spiked part for the given $d$. We computed the limiting Gram
+matrix $G^*$ from~\eqref{eq:4.3} using the same $\{z_{ij1}\}$. Since the spike is
+orthogonal to $\mu$, we have $\beta_{is}=0$ and $r_{11}=1$, so that
+\[
+g^*_{(ij),(kl)}
+=\frac{\eps_i\eps_k\delta}{4}+c\,z_{ij1}z_{kl1},
+\qquad
+G^*=G_0^*+(1-c)I_N.
+\]
+We measured $\|G-G^*\|_F$ and took the average over $100$ replications. The
+implementation is given in \texttt{spiked\_svm\_gram.py}. We give
+the results in Table~\ref{tab:gram}.
+
+\begin{table}[ht]
+\centering
+\caption{The Frobenius norm $\|G-G^*\|_F$ and the ratio of the successive values.}
+\label{tab:gram}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$d$ & $\|G-G^*\|_F$ & s.e. & ratio to previous \\
+\midrule
+100 & 0.29956 & 0.00783 & -- \\
+1{,}000 & 0.09099 & 0.00245 & 3.292 \\
+10{,}000 & 0.03138 & 0.00077 & 2.900 \\
+100{,}000 & 0.01039 & 0.00027 & 3.021 \\
+1{,}000{,}000 & 0.00299 & 0.00007 & 3.471 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We observe that $\|G-G^*\|_F$ tends to zero. Since the dimension is multiplied by
+$10$ in each row, the ratio should be $\sqrt{10}\approx 3.162$ if the error is of
+order $d^{-1/2}$. The observed ratios are $3.292$, $2.900$, $3.021$ and $3.471$,
+which are close to $\sqrt{10}$. Hence Theorem~\ref{thm:1} is confirmed, and
+moreover the convergence rate is of order $d^{-1/2}$ in this setting. We note that
+the rate itself is not claimed in Theorem~\ref{thm:1}, which gives the convergence
+only.
+
+\subsection{The inconsistency}
+\label{sec:sim-inconsist}
+
+We check Corollary~\ref{cor:1}. We considered $n_1=n_2=2$, $m_i=1$ and
+$\delta=0.25$, and took $c\in\{0.8,0.5,0.2\}$ together with the non-spiked case in
+which $c=10^{-4}$. We took the average of $e(1)+e(2)$ over $200$ replications for
+$d\in\{250,1000,4000,16000,64000\}$. The implementation is given in
+\texttt{spiked\_svm\_inconsistency.py}. We give the results in
+Figure~\ref{fig:inconsist}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.72\textwidth]{fig_inconsistency.pdf}
+\caption{Average of $e(1)+e(2)$ for the hard-margin SVM vs.\ $d$
+($n_1=n_2=2$, $\delta=0.25$).}
+\label{fig:inconsist}
+\end{figure}
+
+In the non-spiked case, the misclassification rate tends to zero rapidly as $d$
+increases, which is the consistency property of the existing theory. On the other
+hand, under the spiked model, the misclassification rate does not decrease at all
+even though $d$ is multiplied by $256$. Hence Corollary~\ref{cor:1} is confirmed.
+
+We also observe that the misclassification rate is not monotone in $c$, since the
+value for $c=0.5$ is larger than the one for $c=0.8$. We note that the
+monotonicity was observed in Table~\ref{tab:2}, in which $n_1=n_2=1$. Hence the
+monotonicity does not hold in general when $n_i\ge 2$.
+
+We give a supplementary result in order to clarify the practical meaning of
+Corollary~\ref{cor:1}. We took $d=4000$ and $\delta=0.25$, and varied
+$n_1=n_2=n$. We give the results in Table~\ref{tab:n-vary}.
+
+\begin{table}[ht]
+\centering
+\caption{The average of $e(1)+e(2)$ for $d=4{,}000$ and $\delta=0.25$.}
+\label{tab:n-vary}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n$ & $c=0.8$ & $c=0.5$ & non-spiked \\
+\midrule
+2 & 0.2684 & 0.3467 & 0.0000 \\
+3 & 0.0771 & 0.1589 & 0.0000 \\
+5 & 0.0154 & 0.0424 & 0.0000 \\
+10 & 0.0000 & 0.0003 & 0.0000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Although Corollary~\ref{cor:1} states that the limit is positive for any fixed $n$,
+the value decreases rapidly as $n$ increases and it is already smaller than
+$10^{-3}$ for $n=10$ in this setting. Hence the practical effect of the
+inconsistency is restricted to the case that the sample size is very small. We
+note that the setting of Table~\ref{tab:n-vary} is favourable in the sense that
+$\delta$ is not small. We give a harder setting in
+Section~\ref{sec:sim-classifiers}.
+
+\subsection{The bias term}
+\label{sec:sim-bias}
+
+We check Proposition~\ref{prop:1}. In the $u$-scale, the midpoint of $\mu_1$ and
+$\mu_2$ is the origin, so that the intercept $b$ is exactly the value of the
+discriminant function at the midpoint, that is, the deterministic offset. We
+measured $b$ and compared it with the predictions given by $\kappa$ and by
+$\kappa_*$.
+
+From the outline of the proof of Proposition~\ref{prop:1}, the offset is of the
+form $-A\kappa_*/(2\theta)$. Writing $A=\sum_j\alpha_{1j}=\sum_j\alpha_{2j}$,
+which holds from the constraint $y^T\alpha=0$, and noting that the dual weights are
+equalized within each class, the prediction is
+\begin{equation}
+b\approx -\frac{A}{2}\cdot\frac{\kappa_*}{\theta}
+\quad\text{instead of}\quad
+b\approx -\frac{A}{2}\cdot\frac{\kappa}{\theta}.
+\label{eq:11.2}
+\end{equation}
+We note that $A$ is observable, so that~\eqref{eq:11.2} gives a quantitative
+prediction without any unknown constant. In order to distinguish the two
+predictions, we chose the configurations in which $\kappa$ and $\kappa_*$ disagree
+qualitatively. Since $\theta_1=\theta_2=\theta$ in our setting, we have
+\[
+\frac{\kappa}{\theta}=\frac{1}{n_1}-\frac{1}{n_2},
+\qquad
+\frac{\kappa_*}{\theta}=\frac{1-c_1}{n_1}-\frac{1-c_2}{n_2},
+\]
+so that we can make $\kappa=0$ while $\kappa_*\neq 0$ by taking $n_1=n_2$ and
+$c_1\neq c_2$, and we can make $\kappa_*=0$ while $\kappa\neq 0$ by a suitable
+choice. We took $d=8000$, $\delta=1$ and $300$ replications. The implementation
+is given in \texttt{spiked\_svm\_bias.py}. We give the results
+in Table~\ref{tab:bias}.
+
+\begin{table}[ht]
+\centering
+\caption{The measured intercept $b$ and the two predictions in~\eqref{eq:11.2}.}
+\label{tab:bias}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}rrrrrrrrrr@{}}
+\toprule
+$n_1$ & $n_2$ & $c_1$ & $c_2$ & $\kappa/\theta$ & $\kappa_*/\theta$
+  & $b$ (s.e.) & $A$ & pred.\ $\kappa$ & pred.\ $\kappa_*$ \\
+\midrule
+5 & 5 & 0.2 & 0.8 & 0.0000 & 0.1200 & $-0.0899$ (0.0017) & 1.644 & 0.0000 & $-0.0987$ \\
+4 & 4 & 0.1 & 0.7 & 0.0000 & 0.1500 & $-0.0921$ (0.0029) & 1.492 & 0.0000 & $-0.1119$ \\
+10 & 5 & 0.4 & 0.7 & $-0.1000$ & 0.0000 & $0.0071$ (0.0011) & 1.766 & 0.0883 & 0.0000 \\
+8 & 4 & 0.3 & 0.65 & $-0.1250$ & 0.0000 & $0.0103$ (0.0015) & 1.669 & 0.1043 & 0.0000 \\
+8 & 4 & 0.5 & 0.5 & $-0.1250$ & $-0.0625$ & $0.0557$ (0.0012) & 1.657 & 0.1035 & 0.0518 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We observe the following. In the first two rows, we have $\kappa=0$, so that the
+prediction by $\kappa$ is zero. The measured values are $-0.0899$ and $-0.0921$,
+which are far from zero compared with the standard errors, while the predictions
+by $\kappa_*$ are $-0.0987$ and $-0.1119$. In the third and the fourth rows, we
+have $\kappa_*=0$, and the measured values are $0.0071$ and $0.0103$, which are
+much smaller than the predictions by $\kappa$, that is, $0.0883$ and $0.1043$. In
+the last row, in which both are non-zero, the measured value $0.0557$ is close to
+the prediction by $\kappa_*$, that is, $0.0518$, while the prediction by $\kappa$
+is $0.1035$, which is about twice as large.
+
+Hence Proposition~\ref{prop:1} is confirmed. The remaining discrepancy, which is
+at most about $0.02$ in the first two rows and which is not zero in the third and
+the fourth rows, is considered to come from the finite-dimensional effect and from
+the fact that the dual weights are not exactly equalized within each class. We
+note that the qualitative conclusion is not affected by this discrepancy, because
+the two predictions differ in sign or in magnitude by a factor of two.
+
+\subsection{Comparison of the classifiers}
+\label{sec:sim-classifiers}
+
+Finally, we compare the classifiers. We consider the following procedures. For
+the bias correction, we use the form suggested by the outline of the proof of
+Proposition~\ref{prop:1}, that is, we shift the intercept by
+\begin{equation}
+b\;\longmapsto\;
+b+\frac12\bigl(\bar\alpha_1\,\hat c_{10}-\bar\alpha_2\,\hat c_{20}\bigr),
+\label{eq:11.3}
+\end{equation}
+where $\bar\alpha_i$ is the average of the dual weights of class $i$ and
+$\hat c_{i0}$ is an estimator of the noise floor.
+
+\begin{itemize}
+\item SVM: the hard-margin SVM without any correction.
+\item BC-SVM($\kappa$): the correction~\eqref{eq:11.3} with
+$\hat c_{i0}=\tr(S_i)/\hat\theta$, where $S_i$ is the sample covariance matrix.
+This uses the full trace and corresponds to the existing BC-SVM.
+\item BC-SVM($\kappa_*$): the correction~\eqref{eq:11.3} with
+$\hat c_{i0}=\{\tr(S_i)-\sum_{s\le m_i}\tilde\lambda_{is}\}/\hat\theta$, where
+$\tilde\lambda_{is}$ is the NR estimator of the spiked eigenvalue. This
+corresponds to Proposition~\ref{prop:1}.
+\item SC-SVM: the procedure given in Definition~\ref{def:2}. We give two versions.
+In the version with the sample splitting, which is the one assumed in
+Theorem~\ref{thm:5}, we use one half of the observations for the NR estimation and
+the other half for the training. In the practical version, we use all the
+observations for both steps.
+\end{itemize}
+
+We assumed that the number of the spikes is known and equal to one. We took
+$d=20000$, $n_1=12$, $n_2=6$, $\delta=0.05$ and $100$ replications. We note that
+the sample sizes are imbalanced, so that the bias correction is meaningful. The
+implementation is given in \texttt{spiked\_svm\_classifiers.py}. We
+give the results in Table~\ref{tab:compare}.
+
+\begin{table}[ht]
+\centering
+\caption{The average of $e(1)+e(2)$ for $d=20{,}000$, $n_1=12$, $n_2=6$
+and $\delta=0.05$. Standard errors in parentheses.}
+\label{tab:compare}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+ & SVM & BC-SVM($\kappa$) & BC-SVM($\kappa_*$) & SC-SVM & SC-SVM (split) \\
+\midrule
+non-spiked
+  & 1.0000 (0.0000) & 0.0000 (0.0000) & 0.0000 (0.0000)
+  & 0.0015 (0.0001) & 0.0000 (0.0000) \\
+$c=0.2$
+  & 0.7887 (0.0135) & 0.2504 (0.0255) & 0.1600 (0.0200)
+  & 0.1973 (0.0206) & 0.3684 (0.0279) \\
+$c=0.5$
+  & 0.3137 (0.0191) & 0.4071 (0.0383) & 0.1062 (0.0175)
+  & 0.1185 (0.0171) & 0.2858 (0.0273) \\
+$c=0.8$
+  & 0.0347 (0.0099) & 0.4946 (0.0454) & 0.0220 (0.0082)
+  & 0.0170 (0.0055) & 0.0710 (0.0131) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We observe the following. In the non-spiked case, the SVM gives
+$e(1)+e(2)=1.0000$, which is the strong inconsistency caused by the imbalance of
+the sample sizes, and the bias correction removes it completely. This reproduces
+the result of \citet{nakayama2017}. Under the spiked model, on the other hand,
+BC-SVM($\kappa$) becomes worse as $c$ increases, and for $c=0.8$ it is much worse
+than the SVM without any correction. This is the overcorrection given in
+Proposition~\ref{prop:1}. In contrast, BC-SVM($\kappa_*$) gives a good performance
+for all $c$.
+
+In order to see the dependence on the sample size, we took $d=20000$, $c=0.8$ and
+$\delta=0.01$, which is a harder setting, and varied $(n_1,n_2)$. We give the
+results in Figure~\ref{fig:n-scale}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.72\textwidth]{fig_n_scale.pdf}
+\caption{Average of $e(1)+e(2)$ for $d=20{,}000$, $c=0.8$, $\delta=0.01$, as
+$(n_1,n_2)$ grows.}
+\label{fig:n-scale}
+\end{figure}
+
+We emphasize the behaviour of BC-SVM($\kappa$). Its misclassification rate is
+$0.8759$, $0.8393$ and $0.7699$ at $(n_1,n_2)=(12,6)$, $(24,12)$ and $(48,24)$,
+respectively, that is, it does not improve even though the sample size is
+multiplied by four. This is because the overcorrection given in
+Proposition~\ref{prop:1} is a systematic bias which does not vanish as the sample
+size increases. On the other hand, BC-SVM($\kappa_*$) and the SC-SVM improve
+rapidly. Hence Proposition~\ref{prop:1} is essential in practice.
+
+We give the following remarks, which we consider to be informative for the users.
+
+\begin{enumerate}[label=(\roman*)]
+\item The SC-SVM and BC-SVM($\kappa_*$) give similar performances in
+Table~\ref{tab:compare} and in Figure~\ref{fig:n-scale}, and the SC-SVM is better
+only for $c=0.8$ in Table~\ref{tab:compare} and for the largest sample size in
+Figure~\ref{fig:n-scale}. This is because the spike is orthogonal to $\mu$ in our
+setting, so that the main damage caused by the spike comes through the bias term,
+which BC-SVM($\kappa_*$) already removes. We expect that the advantage of the
+SC-SVM is larger when the spike is not orthogonal to $\mu$ and the projection
+removes a genuine source of noise in the discriminant direction.
+
+\item The version with the sample splitting is worse than the practical version in
+all the cases. This is because the splitting halves the number of the observations
+used for the training, which is expensive when the sample size is small. We use
+the splitting in Theorem~\ref{thm:5} in order to make the projected data independent
+of the training data. We recommend the practical version in applications.
+
+\item The gap between the two versions of the SC-SVM decreases as the sample size
+increases, that is, it is $0.2603$, $0.0222$ and $0.0048$ at
+$(n_1,n_2)=(12,6)$, $(24,12)$ and $(48,24)$, respectively. The gap is consistent
+with Proposition~\ref{prop:3} in the sense that the estimation of the spiked
+direction is poor when the sample size is small, so that the projection does not
+work well.
+\end{enumerate}

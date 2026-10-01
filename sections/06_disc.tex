@@ -1,0 +1,239 @@
+\section{The limit of the discriminant function and the inconsistency}
+\label{sec:disc}
+
+\subsection{The limit of the discriminant function}
+
+Let $x_0\in\pi_1$ and consider the rescaled new observation
+\begin{equation}
+u_0=\frac{x_0-(\mu_1+\mu_2)/2}{\sqrt{\theta}}
+=\eps_0\frac{\mu}{2\sqrt{\theta}}+\frac{v_0+\xi_0}{\sqrt{\theta}},
+\quad\eps_0=+1,
+\label{eq:6.1}
+\end{equation}
+where $v_0=\sum_{s\le m_1}\sqrt{\lambda_{1s}}z_{0s}h_{1s}$ and
+$\xi_0=\sum_{s>m_1}\sqrt{\lambda_{1s}}z_{0s}h_{1s}$. From~\eqref{eq:5.4} we have
+\begin{equation}
+f(u_0)=\sum_{p\in\cI}\beta_p\gamma_p+b,
+\quad\gamma_p=u_p^Tu_0.
+\label{eq:6.2}
+\end{equation}
+
+\begin{theorem}
+\label{thm:3}
+Assume \textup{(A1)} to \textup{(A4)} and \textup{(S)}. Then, as $d\to\infty$,
+it holds that
+\begin{equation}
+f(u_0)\wto f^*(z_0)
+=\sum_{(i,j)\in\cI}\beta_{ij}^*\,g_{(ij),(0)}^*+b^*,
+\label{eq:6.3}
+\end{equation}
+where $z_0=(z_{01},\dots,z_{0m_1})^T$, $(\beta^*,b^*)$ is given in
+Theorem~\ref{thm:2}, and
+\begin{equation}
+\begin{aligned}
+g_{(ij),(0)}^*
+&=\frac{\eps_i\delta}{4}
++\frac{\eps_i\sqrt{\delta}}{2}\sum_{t\le m_1}\sqrt{c_{1t}}\,\beta_{1t}z_{0t}
++\frac{\sqrt{\delta}}{2}\sum_{s\le m_i}\sqrt{c_{is}}\,\beta_{is}z_{ijs}\\
+&\qquad+\sum_{s\le m_i}\sum_{t\le m_1}\sqrt{c_{is}c_{1t}}\,r_{st}^{(i1)}z_{ijs}z_{0t}.
+\end{aligned}
+\label{eq:6.4}
+\end{equation}
+\end{theorem}
+
+We emphasize that the term $c_{10}$ does not appear in~\eqref{eq:6.4}, that is, the
+non-spiked part of $x_0$ does not contribute to the limit.
+
+\begin{proof}
+We follow the same steps as in the proof of Theorem~\ref{thm:1}, replacing
+$u_{kl}$ by $u_0$. The only difference is that $x_0$ is independent of all the
+training observations, and this single difference changes the conclusion.
+
+\textit{Step~1.} From~\eqref{eq:4.1} and~\eqref{eq:6.1}, the bilinearity gives
+\begin{equation}
+\gamma_p=u_{ij}^Tu_0
+=\underbrace{\frac{\eps_i\eps_0\Delta}{4\theta}}_{\mathrm{(I)}}
++\underbrace{\frac{\eps_i}{2}\frac{\mu^T(x_0-\mu_1)}{\theta}}_{\mathrm{(II)}}
++\underbrace{\frac{\eps_0}{2}\frac{\mu^T(x_{ij}-\mu_i)}{\theta}}_{\mathrm{(III)}}
++\underbrace{\frac{(x_{ij}-\mu_i)^T(x_0-\mu_1)}{\theta}}_{\mathrm{(IV)}},
+\label{eq:6.5}
+\end{equation}
+where $p=(i,j)$ and we used $\eps_0=+1$ in~(I).
+
+\textit{Step~2.} The term~(I) does not involve any random variable, and from~(A3)
+we have $\eps_i\delta/4$, which is the first term of~\eqref{eq:6.4}.
+
+\textit{Step~3.} Since $x_0\in\pi_1$, we may apply Lemma~\ref{lem:3} with $i=1$ to
+$x_0$. Note that Lemma~\ref{lem:3} is a statement about a single observation and
+does not use any relation to the other observations. Hence
+\[
+\frac{\mu^T(x_0-\mu_1)}{\theta}
+\longrightarrow\sqrt{\delta}\sum_{t\le m_1}\sqrt{c_{1t}}\,\beta_{1t}z_{0t}.
+\]
+Multiplying by $\eps_i/2$, we obtain the second term of~\eqref{eq:6.4}.
+
+\textit{Step~4.} Applying Lemma~\ref{lem:3} to $x_{ij}$ and using $\eps_0=+1$, we
+obtain the third term of~\eqref{eq:6.4}.
+
+\textit{Step~5.} We consider the term~(IV), which is the essential difference from
+Theorem~\ref{thm:1}. Since $x_0$ is independent of all the training observations
+$\{x_{ij}\}$, the term~(IV) is always the inner product of two distinct independent
+observations, wherever $(i,j)$ is taken in $\cI$. The case of the inner product of
+an observation with itself, which appeared in the diagonal components in
+Theorem~\ref{thm:1}, never occurs here. We divide into two cases.
+
+(IV-a) The case $i=1$. Although $x_{1j}$ and $x_0$ are observations from the same
+population $\pi_1$, they are independent, so that we may apply~\eqref{eq:3.1} of
+Lemma~\ref{lem:1}. We note that the condition $j\neq k$ in Lemma~\ref{lem:1} was
+used only to guarantee the independence. Hence
+\[
+\frac{(x_{1j}-\mu_1)^T(x_0-\mu_1)}{\theta}
+=\sum_{s=1}^{m_1}\frac{\lambda_{1s}}{\theta}z_{1js}z_{0s}+o_P(1).
+\]
+This agrees with the fourth term of~\eqref{eq:6.4} with $i=1$, because
+$r_{st}^{(11)}=\delta_{st}$.
+
+(IV-b) The case $i=2$. Since $x_{2j}$ and $x_0$ are independent observations from
+different populations, we may apply Lemma~\ref{lem:2}. Exchanging the roles of the
+two factors, we obtain
+\[
+\frac{(x_{2j}-\mu_2)^T(x_0-\mu_1)}{\theta}
+=\sum_{s=1}^{m_2}\sum_{t=1}^{m_1}\frac{\sqrt{\lambda_{2s}\lambda_{1t}}}{\theta}
+\rho_{ts}\,z_{2js}z_{0t}+o_P(1),
+\]
+where $\rho_{ts}=h_{2s}^Th_{1t}$. This agrees with the fourth term of
+\eqref{eq:6.4} with $i=2$ under the convention $r_{st}^{(21)}=r_{ts}$.
+
+\textit{Step~6.} We explain why $c_{10}$ does not appear. In Theorem~\ref{thm:1},
+the term $c_{i0}$ came from~\eqref{eq:3.2}, which was used when $(i,j)=(k,l)$. The
+corresponding term here is $\xi_{ij}^T\xi_0/\theta$. Since $\xi_{ij}$ and $\xi_0$
+are independent, we have $E(\xi_{ij}^T\xi_0)=0$ and, by the same computation as in
+\eqref{eq:3.3},
+\[
+E[(\xi_{ij}^T\xi_0)^2]=\tr(\Sigma_{i*}\Sigma_{1*})=o(\theta^2),
+\]
+so that $\xi_{ij}^T\xi_0/\theta=o_P(1)$ from Chebyshev's inequality.
+
+Geometrically, the noise direction $\xi_0$ of the new observation is asymptotically
+orthogonal to the noise directions $\xi_{ij}$ of the training data, because two
+independent random directions are nearly orthogonal in high dimensions. On the
+other hand, $\xi_{ij}$ is of course not orthogonal to itself, so that $c_{i0}$
+remains only in the diagonal components in Theorem~\ref{thm:1}. Since the
+discriminant function uses only the cross terms $u_p^Tu_0$, the noise of $x_0$
+does not affect the classification.
+
+\textit{Step~7.} From Steps~2 to~5, for each $p\in\cI$, the quantity $\gamma_p$ is
+written as a continuous function of $Z^{(d)}$ plus $o_P(1)$. Since the number of
+the components is $N$, which does not depend on $d$, we obtain
+\begin{equation}
+\gamma=(\gamma_p)_{p\in\cI}\wto\gamma^*=(g_{(ij),(0)}^*)_{(i,j)\in\cI}
+\label{eq:6.6}
+\end{equation}
+from~(A4) together with the continuous mapping theorem and Slutsky's theorem.
+
+\textit{Step~8.} We show the joint convergence of $(G,\gamma)$. The $N^2$
+components of $G$ given in Theorem~\ref{thm:1} and the $N$ components of $\gamma$
+given in Step~7 are all written as continuous functions of the common random
+vector $Z^{(d)}$ plus $o_P(1)$. That is, there exists a continuous map $\Psi$,
+which depends on the coefficients $c_{is}$, $\beta_{is}$ and $r_{st}$ converging
+deterministically, such that $(G,\gamma)=\Psi(Z^{(d)})+o_P(1)$ uniformly on
+compact sets. From~(A4) we have $Z^{(d)}\wto Z$, so that
+\begin{equation}
+(G,\gamma)\wto(G^*,\gamma^*)=\Psi(Z)
+\label{eq:6.7}
+\end{equation}
+jointly. We note that this step is necessary, because the marginal convergences
+shown separately do not imply the joint convergence.
+
+\textit{Step~9.} We consider the map
+\[
+\Xi(G,\gamma)=\sum_p\beta_p(G)\gamma_p+b(G).
+\]
+From Lemma~\ref{lem:5}, the map $G\mapsto(\beta(G),b(G))$ is continuous on
+$\cG_+$, and the inner product is continuous, so that $\Xi$ is continuous on
+$\cG_+\times\R^N$. From~\eqref{eq:6.2} we have $f(u_0)=\Xi(G,\gamma)$. From
+Theorem~\ref{thm:1} we have $P(G^*\succ O)=1$, so that the set of the discontinuity
+points of $\Xi$ has measure zero under the limiting distribution. Thus we obtain
+\eqref{eq:6.3} from~\eqref{eq:6.7} and the continuous mapping theorem.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\caption{Correspondence between the proofs of Theorems~\ref{thm:1} and~\ref{thm:3}.}
+\label{tab:1}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Term & Theorem~\ref{thm:1} (training vs training)
+& Theorem~\ref{thm:3} (training vs new) \\
+\midrule
+(I) deterministic
+& $\eps_i\eps_k\delta/4$
+& $\eps_i\delta/4$ (since $\eps_0=1$) \\
+(II), (III) linear
+& Lemma~\ref{lem:3} on both sides
+& Lemma~\ref{lem:3} on both sides, one being $z_0$ \\
+(IV), distinct
+& \eqref{eq:3.1} or Lemma~\ref{lem:2}
+& always this case \\
+(IV), identical
+& \eqref{eq:3.2}, giving $+c_{i0}$
+& never occurs, no $c_{i0}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The inconsistency}
+
+We now derive the inconsistency of the SVM. Here we need to derive a lower bound of
+the expectation from the convergence in distribution. For this purpose we use
+Fatou's lemma, which we summarize in Appendix~\ref{app:A.2} together with its
+intuitive meaning. Roughly speaking, the lemma states that a non-negative mass may
+escape in the limiting procedure but never emerges, and this is exactly the
+direction of the inequality which we need.
+
+\begin{corollary}
+\label{cor:1}
+Assume \textup{(A1)} to \textup{(A4)} and \textup{(S)}. Assume that $z_0$ has a
+continuous distribution whose support is the whole space. Let
+$e(1)=P\{f(u_0)<0\mid\text{training data}\}$. Then it holds that
+\[
+e(1)\wto e^*(1)=P_{z_0}\{f^*(z_0)<0\}.
+\]
+Moreover, if $f^*$ is a non-constant function of $z_0$ with positive probability,
+then
+\[
+\liminf_{d\to\infty}E\{e(1)+e(2)\}>0,
+\]
+that is, the hard-margin SVM and the BC-SVM do not hold the consistency property.
+\end{corollary}
+
+\begin{proof}
+\textit{Step~1.} From Theorem~\ref{thm:3} we have $f(u_0)\wto f^*(z_0)$. Since
+$z_0$ is independent of the training data and the distribution of $f^*(z_0)$ is
+continuous, the boundary $\{f^*=0\}$ has measure zero under the limiting
+distribution. Hence $e(1)\wto e^*(1)$ from the Portmanteau theorem.
+
+\textit{Step~2.} From~\eqref{eq:6.3} and~\eqref{eq:6.4}, $f^*(z_0)$ is a polynomial
+in $z_0$ consisting of an affine part and a quadratic part. If it is non-constant,
+then it takes negative values on a set of positive Lebesgue measure, and hence
+$E\{e^*(1)\}>0$ because the support of $z_0$ is the whole space.
+
+\textit{Step~3.} Since $e(1)\ge 0$, we may apply Lemma~\ref{lem:7} in
+Appendix~\ref{app:A.2} and obtain
+\[
+E\{e^*(1)\}\le\liminf_{d\to\infty}E\{e(1)\}.
+\]
+Adding $e(2)$ does not change the inequality.
+\end{proof}
+
+\begin{remark}
+\label{rem:5}
+We emphasize that the inconsistency in Corollary~\ref{cor:1} is different from the
+strong inconsistency of \citet{nakayama2017}. They showed that the
+misclassification rate tends to one when the sample sizes are imbalanced, which is
+caused by the deterministic bias $\kappa$ in~\eqref{eq:1.3}. Here the
+misclassification rate tends neither to zero nor to one, and it is caused by the
+randomness which survives in the limit. Hence the bias correction alone cannot
+remove this difficulty. We discuss this point in Sections~\ref{sec:bias}
+and~\ref{sec:scsvm}.
+\end{remark}

@@ -1,0 +1,213 @@
+\documentclass[11pt,a4paper]{amsart}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage[authoryear,round]{natbib}
+\usepackage{hyperref}
+
+\numberwithin{equation}{section}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\wto}{\xrightarrow{d}}
+
+\title[Spiked SVM under HDLSS]{Asymptotic properties of support vector machines\\
+in high-dimension, low-sample-size settings under a spiked model}
+
+\author{Yugo Nakayama}
+
+% Show affiliation under the author on the title page (amsart puts \address at end).
+\makeatletter
+\def\@setauthors{%
+  \begingroup
+  \def\thanks{\protect\thanks@warning}%
+  \trivlist
+  \centering\footnotesize \@topsep30\p@\relax
+  \advance\@topsep by -\baselineskip
+  \item\relax
+  \author@andify\authors
+  \def\\{\protect\linebreak}%
+  \MakeUppercase{\authors}\\[6pt]
+  {\normalsize\normalfont Independent researcher}%
+  \ifx\@empty\contribs
+  \else
+    ,\penalty-3 \space \@setcontribs
+    \@closetoccontribs
+  \fi
+  \endtrivlist
+  \endgroup
+}
+\makeatother
+
+\begin{document}
+
+\begin{abstract}
+In this paper, we consider asymptotic properties of the support vector machine (SVM)
+in high-dimension, low-sample-size (HDLSS) settings under a spiked model.
+The existing theory of the SVM in the HDLSS context relies on the geometric
+representation of HDLSS data, which requires that the eigenvalues of the covariance
+matrices are not dominant. We first show that the geometric representation does not
+hold under the spiked model. We show that the Gram matrix of HDLSS data converges
+in distribution to a random matrix, namely, the HDLSS data converge to a random
+configuration in a finite-dimensional space whose dimension is given by the number
+of the spikes. We show that the misclassification rates of the SVM do not tend to
+zero, that is, the SVM does not hold the consistency property. We also show that
+the bias-corrected SVM (BC-SVM) does not give preferable performance in this setting
+because the bias term itself should be modified. In order to overcome such
+difficulties, we propose a spike-corrected SVM (SC-SVM). We show that the SC-SVM
+holds the consistency property when the sample size goes to infinity, and that the
+growth of the sample size is essential in the sense that any projection-based
+procedure fails when the sample size is fixed. Finally, we check the performance
+of the classifiers by numerical simulations.
+\end{abstract}
+
+\keywords{Bias-corrected SVM; Geometric representation; Hard-margin SVM; HDLSS;
+Limiting configuration; Noise-reduction methodology; Spiked model.}
+
+\maketitle
+
+\tableofcontents
+
+\input{sections/01_intro}
+\input{sections/02_notation}
+\input{sections/03_inner}
+\input{sections/04_config}
+\input{sections/05_svm}
+\input{sections/06_disc}
+\input{sections/07_example}
+\input{sections/08_bias}
+\input{sections/09_scsvm}
+\input{sections/10_fixed}
+\input{sections/11_sim}
+\input{sections/12_conclude}
+\appendix
+\input{sections/appendix_a}
+
+\section*{Acknowledgments}
+The author thanks anonymous readers for helpful comments.
+Parts of the drafting and technical editing of this manuscript were assisted by
+large language models, including Anthropic's Claude Opus~5.
+The author takes full responsibility for the correctness of all mathematical
+statements, proofs, and numerical results.
+
+\begin{thebibliography}{99}
+
+\bibitem[Ahn et~al.(2007)]{ahn2007}
+Ahn, J., Marron, J.~S., Muller, K.~M. and Chi, Y.-Y. (2007).
+The high-dimension, low-sample-size geometric representation holds under mild conditions.
+\textit{Biometrika}, \textbf{94}, 760--766.
+
+\bibitem[Aoshima and Yata(2011)]{aoshima2011}
+Aoshima, M. and Yata, K. (2011).
+Two-stage procedures for high-dimensional data.
+\textit{Sequential Analysis}, \textbf{30}, 356--399.
+
+\bibitem[Aoshima and Yata(2014)]{aoshima2014}
+Aoshima, M. and Yata, K. (2014).
+A distance-based, misclassification rate adjusted classifier for multiclass, high-dimensional data.
+\textit{Annals of the Institute of Statistical Mathematics}, \textbf{66}, 983--1010.
+
+\bibitem[Aoshima and Yata(2019)]{aoshima2019}
+Aoshima, M. and Yata, K. (2019).
+Distance-based classifier by data transformation for high-dimension, strongly spiked eigenvalue models.
+\textit{Annals of the Institute of Statistical Mathematics}, \textbf{71}, 473--503.
+
+\bibitem[Berge(1963)]{berge1963}
+Berge, C. (1963).
+\textit{Topological Spaces}.
+Oliver and Boyd, Edinburgh.
+
+\bibitem[Billingsley(1999)]{billingsley1999}
+Billingsley, P. (1999).
+\textit{Convergence of Probability Measures}, 2nd~ed.
+Wiley, New York.
+
+\bibitem[Chan and Hall(2009)]{chan2009}
+Chan, Y.-B. and Hall, P. (2009).
+Scale adjustments for classifiers in high-dimensional, low sample size settings.
+\textit{Biometrika}, \textbf{96}, 469--478.
+
+\bibitem[Durrett(2019)]{durrett2019}
+Durrett, R. (2019).
+\textit{Probability: Theory and Examples}, 5th~ed.
+Cambridge University Press, Cambridge.
+
+\bibitem[Hall et~al.(2005)]{hall2005}
+Hall, P., Marron, J.~S. and Neeman, A. (2005).
+Geometric representation of high dimension, low sample size data.
+\textit{Journal of the Royal Statistical Society, Series~B}, \textbf{67}, 427--444.
+
+\bibitem[Jung and Marron(2009)]{jung2009}
+Jung, S. and Marron, J.~S. (2009).
+PCA consistency in high dimension, low sample size context.
+\textit{The Annals of Statistics}, \textbf{37}, 4104--4130.
+
+\bibitem[Marron et~al.(2007)]{marron2007}
+Marron, J.~S., Todd, M.~J. and Ahn, J. (2007).
+Distance-weighted discrimination.
+\textit{Journal of the American Statistical Association}, \textbf{102}, 1267--1271.
+
+\bibitem[Nakayama(2021)]{nakayama2021}
+Nakayama, Y. (2021).
+Robust support vector machine for high-dimensional imbalanced data.
+\textit{Communications in Statistics - Simulation and Computation}, \textbf{50}, 1524--1540.
+
+\bibitem[Nakayama(2022)]{nakayama2022}
+Nakayama, Y. (2022).
+Support vector machine and optimal parameter selection for high-dimensional imbalanced data.
+\textit{Communications in Statistics - Simulation and Computation}, \textbf{51}, 6739--6754.
+
+\bibitem[Nakayama et~al.(2017)]{nakayama2017}
+Nakayama, Y., Yata, K. and Aoshima, M. (2017).
+Support vector machine and its bias correction in high-dimension, low-sample-size settings.
+\textit{Journal of Statistical Planning and Inference}, \textbf{191}, 88--100.
+
+\bibitem[Nakayama et~al.(2020)]{nakayama2020}
+Nakayama, Y., Yata, K. and Aoshima, M. (2020).
+Bias-corrected support vector machine with Gaussian kernel in high-dimension, low-sample-size settings.
+\textit{Annals of the Institute of Statistical Mathematics}, \textbf{72}, 1257--1286.
+
+\bibitem[Nakayama et~al.(2021)]{nakayama2021b}
+Nakayama, Y., Yata, K. and Aoshima, M. (2021).
+Clustering by principal component analysis with Gaussian kernel in high-dimension, low-sample-size settings.
+\textit{Journal of Multivariate Analysis}, \textbf{185}, 104779.
+
+\bibitem[Qiao and Zhang(2015)]{qiao2015}
+Qiao, X. and Zhang, L. (2015).
+Distance-weighted support vector machine.
+\textit{Statistics and Its Interface}, \textbf{8}, 331--345.
+
+\bibitem[Yata and Aoshima(2012)]{yata2012}
+Yata, K. and Aoshima, M. (2012).
+Effective PCA for high-dimension, low-sample-size data with noise reduction via geometric representations.
+\textit{Journal of Multivariate Analysis}, \textbf{105}, 193--215.
+
+\bibitem[Yata and Aoshima(2013)]{yata2013}
+Yata, K. and Aoshima, M. (2013).
+PCA consistency for the power spiked model in high-dimensional settings.
+\textit{Journal of Multivariate Analysis}, \textbf{122}, 334--354.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,265 @@
+\section{The limiting configuration theorem}
+\label{sec:config}
+
+\subsection{The Gram matrix}
+
+We consider the rescaled observations
+\begin{equation}
+u_{ij}=\frac{x_{ij}-(\mu_1+\mu_2)/2}{\sqrt{\theta}}
+=\eps_i\frac{\mu}{2\sqrt{\theta}}+\frac{v_{ij}+\xi_{ij}}{\sqrt{\theta}}.
+\label{eq:4.1}
+\end{equation}
+Note that the translation does not change the weight vector of the SVM and the
+scaling changes $\|w\|$ and $b$ simultaneously, so that the classification result
+is not affected. We define the Gram matrix by
+\begin{equation}
+G=\bigl(u_{ij}^T u_{kl}\bigr)_{(i,j),(k,l)\in\cI}\in\R^{N\times N},
+\label{eq:4.2}
+\end{equation}
+where $(i,j)$ gives the row and $(k,l)$ gives the column according to the order
+\eqref{eq:2.2}. We also define
+\[
+D=\diag(\underbrace{c_{10},\dots,c_{10}}_{n_1},
+\underbrace{c_{20},\dots,c_{20}}_{n_2}),
+\]
+whose components are arranged in the same order.
+
+\subsection{The main theorem}
+
+\begin{theorem}
+\label{thm:1}
+Assume \textup{(A1)} to \textup{(A4)} and \textup{(S)}. Then, as $d\to\infty$,
+it holds that
+\[
+G\wto G^*=G_0^*+D,
+\]
+where the $((i,j),(k,l))$ component of $G_0^*$ is given by
+\begin{equation}
+\begin{aligned}
+g^*_{(i,j),(k,l)}
+&=\frac{\eps_i\eps_k\delta}{4}
++\frac{\eps_i\sqrt{\delta}}{2}\sum_{t\le m_k}\sqrt{c_{kt}}\,\beta_{kt}z_{klt}
++\frac{\eps_k\sqrt{\delta}}{2}\sum_{s\le m_i}\sqrt{c_{is}}\,\beta_{is}z_{ijs}\\
+&\qquad+\sum_{s\le m_i}\sum_{t\le m_k}\sqrt{c_{is}c_{kt}}\,r_{st}^{(ik)}z_{ijs}z_{klt},
+\end{aligned}
+\label{eq:4.3}
+\end{equation}
+with $r_{st}^{(11)}=r_{st}^{(22)}=\delta_{st}$, $r_{st}^{(12)}=r_{st}$ and
+$r_{st}^{(21)}=r_{ts}$. Moreover, when $c_{10}>0$ and $c_{20}>0$, it holds that
+$G^*\succ O$ for every realization of $Z$.
+\end{theorem}
+
+\begin{proof}
+(i) Convergence of the components. From~\eqref{eq:4.1} we have
+\[
+u_{ij}^Tu_{kl}
+=\underbrace{\frac{\eps_i\eps_k\Delta}{4\theta}}_{\mathrm{(I)}}
++\underbrace{\frac{\eps_i}{2}\frac{\mu^T(x_{kl}-\mu_k)}{\theta}}_{\mathrm{(II)}}
++\underbrace{\frac{\eps_k}{2}\frac{\mu^T(x_{ij}-\mu_i)}{\theta}}_{\mathrm{(III)}}
++\underbrace{\frac{(x_{ij}-\mu_i)^T(x_{kl}-\mu_k)}{\theta}}_{\mathrm{(IV)}}.
+\]
+The term~(I) converges to $\eps_i\eps_k\delta/4$ from~(A3). The terms~(II)
+and~(III) converge to the second and the third terms of~\eqref{eq:4.3} from
+Lemma~\ref{lem:3}. As for~(IV), when $(i,j)\neq(k,l)$, it converges to the fourth
+term of~\eqref{eq:4.3} from~\eqref{eq:3.1} for $i=k$ and from Lemma~\ref{lem:2} for
+$i\neq k$. When $(i,j)=(k,l)$, it converges to the fourth term plus $c_{i0}$ from
+\eqref{eq:3.2}. This gives the diagonal matrix $D$.
+
+Since the number of the components is $N^2$, which does not depend on $d$, and all
+of them are written as a common continuous function of $Z^{(d)}$ plus $o_P(1)$, the
+convergence of the matrix follows from~(A4) together with the continuous mapping
+theorem and Slutsky's theorem.
+
+(ii) Positive definiteness. From Lemma~\ref{lem:6} in Section~\ref{sec:config-exist},
+$G_0^*$ is the Gram matrix of a family of vectors $\tilde u_{ij}$ in $\R^K$, where
+$K=1+m_1+m_2$. Hence, for any $a=(a_{ij})\in\R^N$, it holds that
+\[
+a^TG_0^*a=\Bigl\|\sum_{(i,j)\in\cI}a_{ij}\tilde u_{ij}\Bigr\|^2\ge 0.
+\]
+Note that this holds for every realization of $Z$, because
+$(\tilde u_{ij})$ is a fixed family of vectors in $\R^K$ once the realization is
+given. On the other hand, we have
+\[
+a^TDa\ge\min(c_{10},c_{20})\|a\|^2.
+\]
+Hence, when $c_{10}>0$ and $c_{20}>0$, for any $a\neq 0$ it holds that
+$a^TG^*a>0$.
+\end{proof}
+
+\subsection{Existence of the limiting configuration}
+\label{sec:config-exist}
+
+In the proof of Theorem~\ref{thm:1}, we used the fact that $G_0^*$ is the Gram
+matrix of a family of vectors. This fact is not trivial. If one specifies the
+values of the inner products of $N$ vectors arbitrarily, there does not necessarily
+exist a family of vectors which realizes them. For example, one cannot find three
+unit vectors whose mutual inner products are all equal to $-1$. Hence we need to
+prove the existence.
+
+\begin{lemma}
+\label{lem:6}
+Assume \textup{(A3)} with $\Delta>0$ and let $K=1+m_1+m_2$. Then there exists a
+family of non-random vectors $e_\mu$ and $\tilde h_{is}$ ($i=1,2$, $s\le m_i$) in
+$\R^K$ such that
+\begin{equation}
+\|e_\mu\|^2=1,\quad
+e_\mu^T\tilde h_{is}=\beta_{is},\quad
+\tilde h_{is}^T\tilde h_{it}=\delta_{st},\quad
+\tilde h_{1s}^T\tilde h_{2t}=r_{st}.
+\label{eq:4.4}
+\end{equation}
+Moreover, putting
+\begin{equation}
+\tilde u_{ij}
+=\eps_i\frac{\sqrt{\delta}}{2}\,e_\mu
++\sum_{s\le m_i}\sqrt{c_{is}}\,z_{ijs}\,\tilde h_{is},
+\quad(i,j)\in\cI,
+\label{eq:4.5}
+\end{equation}
+it holds that $\tilde u_{ij}^T\tilde u_{kl}=g^*_{(ij),(kl)}$.
+\end{lemma}
+
+\begin{proof}
+We proceed in four steps.
+
+\textit{Step~1.} We write the target inner products as a matrix. Let
+\[
+\cJ=\{\mu\}\cup\{(i,s):i=1,2,\,s\le m_i\},
+\quad|\cJ|=K,
+\]
+and define a $K\times K$ symmetric matrix $\Gamma$ whose components are the
+right-hand sides of~\eqref{eq:4.4}, that is,
+$\Gamma_{\mu\mu}=1$, $\Gamma_{\mu,(i,s)}=\beta_{is}$,
+$\Gamma_{(i,s),(i,t)}=\delta_{st}$, $\Gamma_{(1,s),(2,t)}=r_{st}$.
+What we have to show is that there exists a family of vectors in $\R^K$ whose Gram
+matrix is $\Gamma$.
+
+\textit{Step~2.} We show that $\Gamma\succeq O$. We do not evaluate any inequality.
+Instead, we carry the positive semi-definiteness which holds for finite $d$ to the
+limit. For each $d$, we take the vectors
+\[
+e_\mu^{(d)}=\mu/\sqrt{\Delta},\qquad h_{is}\quad(i=1,2,\,s\le m_i),
+\]
+which actually exist in $\R^d$. Let $\Gamma^{(d)}$ be the Gram matrix of these $K$
+vectors. Then $\Gamma^{(d)}\succeq O$ by definition, because for any
+$a\in\R^K$ it holds that
+\begin{equation}
+a^T\Gamma^{(d)}a
+=\Bigl\|a_\mu e_\mu^{(d)}+\sum_{i,s}a_{(i,s)}h_{is}\Bigr\|^2\ge 0.
+\label{eq:4.6}
+\end{equation}
+The components of $\Gamma^{(d)}$ are given by
+\[
+(e_\mu^{(d)})^Te_\mu^{(d)}=1,\quad
+(e_\mu^{(d)})^Th_{is}=b_{is},\quad
+h_{is}^Th_{it}=\delta_{st},\quad
+h_{1s}^Th_{2t}=\rho_{st}.
+\]
+Note that the first and the third equalities hold exactly for every $d$, because
+$\|e_\mu^{(d)}\|=1$ and $H_i$ is an orthogonal matrix. As for the second and the
+fourth, we have $b_{is}\to\beta_{is}$ and $\rho_{st}\to r_{st}$ from~(A3). Since
+$K$ does not depend on $d$, the componentwise convergence gives
+$\Gamma^{(d)}\to\Gamma$. Finally, fixing $a\in\R^K$ and letting $d\to\infty$ in
+\eqref{eq:4.6}, we obtain $a^T\Gamma a\ge 0$ because the limit of a sequence of
+non-negative numbers is non-negative. Since $a$ is arbitrary, we have
+$\Gamma\succeq O$. This is nothing but a direct verification that the cone of
+positive semi-definite matrices is closed.
+
+\textit{Step~3.} We construct the vectors from $\Gamma\succeq O$. Let
+$\Gamma=Q\Lambda Q^T$ be the spectral decomposition, where $Q$ is an orthogonal
+matrix and $\Lambda=\diag(\ell_1,\dots,\ell_K)$ with $\ell_r\ge 0$. Let
+$B=\Lambda^{1/2}Q^T$, which is well defined because $\ell_r\ge 0$, and put
+$B^TB=\Gamma$. Then we define $e_\mu$ and $\tilde h_{is}$ as the columns of $B$
+corresponding to the indices of $\cJ$. Since $B^TB$ is the inner product of the
+columns of $B$, the equality $B^TB=\Gamma$ is exactly the four equalities in
+\eqref{eq:4.4}. We note that $\Gamma$ is determined only by the non-random
+quantities $\beta_{is}$ and $r_{st}$, so that $e_\mu$ and $\tilde h_{is}$ are
+non-random.
+
+\textit{Step~4.} We check the Gram matrix of~\eqref{eq:4.5}. From the bilinearity
+we have
+\begin{align*}
+\tilde u_{ij}^T\tilde u_{kl}
+&=\frac{\eps_i\eps_k\delta}{4}\|e_\mu\|^2
++\frac{\eps_i\sqrt{\delta}}{2}\sum_{t\le m_k}\sqrt{c_{kt}}\,z_{klt}\,e_\mu^T\tilde h_{kt}\\
+&\quad+\frac{\eps_k\sqrt{\delta}}{2}\sum_{s\le m_i}\sqrt{c_{is}}\,z_{ijs}\,e_\mu^T\tilde h_{is}\\
+&\quad+\sum_{s\le m_i}\sum_{t\le m_k}\sqrt{c_{is}c_{kt}}\,z_{ijs}z_{klt}\,
+\tilde h_{is}^T\tilde h_{kt}.
+\end{align*}
+Substituting~\eqref{eq:4.4}, we obtain~\eqref{eq:4.3} term by term.
+\end{proof}
+
+\begin{remark}
+\label{rem:2}
+Lemma~\ref{lem:6} gives $G_0^*\succeq O$, but it does not give the positive
+definiteness. In fact, in the setting of Section~\ref{sec:example} we have
+$r_{11}=1$, that is, $\tilde h_{11}=\tilde h_{21}$, so that $\Gamma$ is singular.
+In such a case, $G_0^*$ degenerates into a proper subspace of $\R^K$ and $G_0^*$ is
+singular when $N>K$. Hence the positive definiteness of $G^*$ comes only from the
+diagonal matrix $D$, that is, from the non-spiked noise. The condition $c_{i0}>0$
+in~(S) is essential in this sense. When $c_{i0}=0$, the affine independence of the
+data is lost and the arguments in Lemmas~\ref{lem:4} and~\ref{lem:5} break down.
+\end{remark}
+
+\begin{remark}
+\label{rem:3}
+When $\Delta=0$, the quantity $e_\mu$ is not defined. On the other hand, the
+coefficient $\sqrt{\delta}/2$ of $e_\mu$ in~\eqref{eq:4.5} also vanishes because
+$\delta=0$. Hence it suffices to remove the index $\mu$ from $\cJ$, put
+$K=m_1+m_2$ and repeat the same argument. The first three terms of~\eqref{eq:4.3}
+also vanish.
+\end{remark}
+
+\subsection{Discussion on the construction}
+
+The construction in Lemma~\ref{lem:6} may look artificial. We give the idea behind
+it, which is in fact simple.
+
+First, we note that the SVM sees the data only through the inner products. As we
+show in Section~\ref{sec:svm}, the dual problem involves only the Gram matrix $G$,
+and the discriminant function involves only $u_p^Tu_0$. Hence the SVM is invariant
+under congruent transformations, and we do not have to ask whether the points
+themselves converge. We only have to ask whether the table of the inner products
+converges. Lemmas~\ref{lem:1} to~\ref{lem:3} do exactly this, and the problem of
+the diverging dimension is reduced to the convergence of an $N\times N$ matrix.
+
+Second, however, we also want a geometric picture corresponding to the statement
+that HDLSS data are located at the vertices of a regular simplex. This leads to
+the inverse problem: does there exist a configuration of points which realizes the
+limiting table of the inner products, and if so, in how many dimensions? This is
+the problem of the classical multidimensional scaling.
+
+Third, the tool for the inverse problem is the standard fact that, for a real
+symmetric matrix $\Gamma$, the conditions $\Gamma\succeq O$, $\mathrm{rank}(\Gamma)=r$
+for some $r$, and $\Gamma$ is a Gram matrix of some family of vectors, are
+equivalent. Hence the proof of the positive semi-definiteness is itself the proof
+of the existence of the configuration, and what we have to show is reduced to one
+inequality.
+
+Fourth, the positive semi-definiteness is obtained for free from the existence in
+finite dimensions. For finite $d$, the vectors $e_\mu^{(d)}$ and $h_{is}$ actually
+exist in $\R^d$, and the Gram matrix of vectors which actually exist is of course
+positive semi-definite. We only have to carry this property to the limit, and the
+condition~(A3) is assumed exactly for this purpose.
+
+Finally, the dimension $K=1+m_1+m_2$ is the number of the directions which survive
+in the limiting table of the inner products, namely, the mean difference direction
+and the spiked directions. The non-spiked directions are killed by
+Lemmas~\ref{lem:1} to~\ref{lem:3} except for the diagonal term $c_{i0}$.
+
+We note that the choice of $B$ is not unique. One may use the Cholesky
+decomposition or the reproducing kernel Hilbert space construction. We use the
+spectral decomposition because it works without any modification even when $\Gamma$
+is singular, as we remarked in Remark~\ref{rem:2}.
+
+\begin{remark}[Collapse of the geometric representation]
+\label{rem:4}
+In the existing theory, which corresponds to $m_i=0$, the second to the fourth
+terms of~\eqref{eq:4.3} vanish and $G^*$ is a deterministic matrix. This is the
+geometric representation, and it is the reason why the SVM solution can be written
+in a closed form. Under the spiked model, $G^*$ is a random matrix depending on
+$Z$. That is, HDLSS data converge to a random configuration in a
+$(1+m_1+m_2)$-dimensional space together with $N$ mutually orthogonal noise axes
+whose lengths are $\sqrt{c_{i0}}$. All the arguments in the subsequent sections are
+reduced to this finite-dimensional random limiting problem.
+\end{remark}

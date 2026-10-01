@@ -1,0 +1,99 @@
+\section{Concluding remarks}
+\label{sec:conclude}
+
+In this paper, we considered asymptotic properties of the SVM in HDLSS settings
+under a spiked model. We showed that the geometric representation of HDLSS data
+does not hold under the spiked model, and that the HDLSS data converge to a random
+configuration in a finite-dimensional space. We showed that the SVM does not hold
+the consistency property, and that the bias term of the BC-SVM should be modified.
+In order to overcome such difficulties, we proposed the SC-SVM and showed that it
+holds the consistency property when the sample size goes to infinity. We also
+showed that the growth of the sample size is essential for the projection-based
+procedures. Finally, we verified Theorems~\ref{thm:1} and~\ref{thm:4},
+Corollary~\ref{cor:1} and Proposition~\ref{prop:1} numerically, and we compared the
+classifiers.
+
+We give the following comparison between the existing theory and the results in
+this paper.
+
+\begin{table}[ht]
+\centering
+\caption{Comparison between the non-spiked model and the spiked model.}
+\label{tab:model-compare}
+\begin{tabular}{@{}p{3.2cm}p{5.2cm}p{5.2cm}@{}}
+\toprule
+Feature & non-spiked model & spiked model \\
+\midrule
+eigenvalue condition
+& $\tr(\Sigma_i^2)/\theta_i^2\to 0$
+& $\lambda_{is}/\theta\to c_{is}\in(0,1)$ \\
+data configuration
+& deterministic regular simplex
+& random configuration in $\R^{1+m_1+m_2}$ \\
+Gram matrix
+& deterministic limit
+& random $G^*$ \\
+positive definiteness
+& from the geometric representation
+& only from the diagonal $D$ \\
+SVM solution
+& deterministic, closed form
+& random limit \\
+noise of $x_0$
+& contributes as a diagonal term
+& does not contribute \\
+misclassification rate
+& tends to zero by the BC-SVM
+& does not tend to zero \\
+bias term
+& $\kappa$ in~\eqref{eq:1.3}
+& $\kappa_*$ in Proposition~\ref{prop:1} \\
+remedy
+& bias correction
+& spike removal and bias correction \\
+required sample size
+& $N$ may be fixed
+& $n_i\to\infty$ is essential \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We close the paper with some remaining problems.
+
+\begin{enumerate}[label=(\roman*)]
+\item The theory of the SVM with the Gaussian kernel given by \citet{nakayama2020}
+relies on the fact that the argument of the kernel function becomes deterministic
+in the limit. From Theorem~\ref{thm:1}, the argument is random under the spiked
+model, so that the kernel matrix itself has a random limit. It is a natural
+problem to investigate how the choice of the scale parameter should be modified.
+
+\item As we remarked in Remark~\ref{rem:7}, a minimax type lower bound for fixed
+$N$ remains open.
+
+\item The SC-SVM uses the NR methodology as a preprocessing. It is an interesting
+problem to construct a framework in which the projection and the separating
+hyperplane are estimated simultaneously. We also note from
+Section~\ref{sec:sim-classifiers} that the sample splitting assumed in
+Theorem~\ref{thm:5} is expensive in practice, so that a theory without the
+splitting is desirable.
+
+\item We assumed~(S), in which the spiked eigenvalues are of the same order as
+$\theta$. On the other hand, there is an intermediate region in which
+$\lambda_{i1}/\theta\to 0$ while $\lambda_{i1}^2/\tr(\Sigma_i^2)$ does not tend to
+zero. In this region, the geometric representation is preserved but the second
+order asymptotics is different, so that we expect that the consistency property is
+preserved while the convergence rate is changed.
+
+\item We considered the hard-margin SVM. When a regularization parameter $C$ is
+introduced, the feasible set of the dual problem becomes
+$\{\alpha:0\le\alpha_p\le C\}$ and the a priori bound in Lemma~\ref{lem:5} becomes
+easier, so that the arguments in Section~\ref{sec:svm} carry over. On the other
+hand, we expect that the limit depends on the relative scale of $C$ and $\theta$,
+and the classification of the cases is not yet organized.
+
+\item In the simulations we took the spiked direction orthogonal to $\mu$. As we
+noted in Section~\ref{sec:sim-classifiers}, the advantage of the SC-SVM over the
+bias correction alone is expected to be larger when the spike is not orthogonal to
+$\mu$. A systematic study of this case, together with an application to actual
+data, is left for future work.
+\end{enumerate}

@@ -1,0 +1,127 @@
+\section{The spike-corrected SVM}
+\label{sec:scsvm}
+
+Corollary~\ref{cor:1} shows that the SVM does not hold the consistency property
+under the spiked model. The interpretation in Section~\ref{sec:example} gives a
+remedy: a spiked direction is a source of noise which cannot be learned when the
+sample size is fixed, so that we should remove it if it carries no information about
+the classification.
+
+\begin{definition}
+\label{def:1}
+For a direction $h_{is}$, we define the signal-to-spike ratio by
+\[
+\eta_{is}=\frac{(h_{is}^T\mu)^2}{\lambda_{is}}=\frac{\Delta b_{is}^2}{\lambda_{is}}
+\longrightarrow\frac{\delta\beta_{is}^2}{c_{is}}.
+\]
+\end{definition}
+
+Under~(A3) and~(S), it holds that $\eta_{is}\to\delta\beta_{is}^2/c_{is}$.
+
+\begin{proposition}
+\label{prop:2}
+Consider the subproblem obtained by projecting the data onto a one-dimensional
+direction $h$. When $n_i$ is fixed, the limiting misclassification rate obtained by
+using this direction is not smaller than $\Phi(-\sqrt{\eta}/2)$. Hence, when
+$\eta_{is}\to\infty$, the direction should be kept, and when $\eta_{is}=O(1)$, the
+direction should be removed.
+\end{proposition}
+
+\begin{proof}[Outline of proof]
+Projecting onto $h$, the population $\pi_i$ becomes a one-dimensional distribution
+with mean $h^T\mu_i$ and variance $\lambda$. The mean difference is $|h^T\mu|$ and
+the standard deviation is $\sqrt{\lambda}$, so that the error rate of the Bayes
+rule with known parameters is $\Phi\{-|h^T\mu|/(2\sqrt{\lambda})\}=\Phi(-\sqrt{\eta}/2)$
+in the normal case. When $\eta=O(1)$, this is bounded below by a positive constant,
+and the estimation error makes it larger. On the other hand, when $\eta\to\infty$,
+it tends to zero. As for the loss caused by the removal, we note that
+$\eta_{is}=O(1)$ implies $(h_{is}^T\mu)^2=O(\lambda_{is})=O(\theta)$, so that the
+loss is negligible when the residual signal diverges faster than $\theta$.
+\end{proof}
+
+\subsection{The procedure}
+
+\begin{definition}[SC-SVM]
+\label{def:2}
+We propose the spike-corrected SVM as follows.
+\begin{enumerate}
+\item Split the observations from each $\pi_i$ into $D_i^{(1)}$ for estimation and
+$D_i^{(2)}$ for training. The split is essential in the theory because it makes
+the estimated projection independent of the training data.
+\item Apply the NR methodology of \citet{yata2012} to $D_i^{(1)}$ and obtain the
+number of the spikes $\hat m_i$, the eigenvalues $\tilde\lambda_{is}$ and the
+eigenvectors $\hat h_{is}$.
+\item Compute $\hat\eta_{is}=(\hat h_{is}^T\hat\mu)^2/\tilde\lambda_{is}$ with
+$\hat\mu=\bar x_1^{(1)}-\bar x_2^{(1)}$, and collect the directions with
+$\hat\eta_{is}\le\tau_d$ into the set $\hat S$, where $\tau_d\to\infty$ is a
+threshold such as $\tau_d=\log d$.
+\item Let $\hat U$ be an orthonormal basis of $\hat S$ and put
+$\hat P=I_d-\hat U\hat U^T$. Project the training data and the new observation
+onto $\hat P$.
+\item Apply the BC-SVM with the modified bias term $\hat\kappa_*$ given in
+Proposition~\ref{prop:1} to the projected data. When some spiked directions are
+kept, construct a plug-in rule on the low-dimensional part and add it to the
+discriminant function.
+\end{enumerate}
+\end{definition}
+
+We assume the following conditions.
+
+\begin{enumerate}[label=(C\arabic*),leftmargin=*]
+\item It holds that $n_i\to\infty$ and $n_i/d\to 0$.
+\item For $s\le m_i$, it holds that $\tilde\lambda_{is}/\lambda_{is}\to 1$ and
+$\hat h_{is}^Th_{is}\to 1$ in probability.
+\item Let $P_*$ be the projection onto the orthogonal complement of the removed
+spikes and $\Delta_*=\|P_*\mu\|^2$. It holds that
+\[
+\Delta_*/\{\tr(\Sigma_{1*}^2)+\tr(\Sigma_{2*}^2)\}^{1/2}\to\infty.
+\]
+\end{enumerate}
+
+The condition~(C2) holds under the conditions given by \citet{yata2012}, such as
+$n_i\tr(\Sigma_{i*}^2)/\lambda_{im_i}^2\to 0$. We assume it explicitly in this
+paper.
+
+\begin{theorem}
+\label{thm:5}
+Assume \textup{(A1)} to \textup{(A4)}, \textup{(S)} and \textup{(C1)} to
+\textup{(C3)}. Then the SC-SVM holds the consistency property, that is,
+\[
+e_{SC}(1)+e_{SC}(2)\longrightarrow 0
+\quad\text{in probability as }d\to\infty.
+\]
+On the other hand, from Corollary~\ref{cor:1}, the SVM and the BC-SVM do not hold
+the consistency property under the same conditions.
+\end{theorem}
+
+\begin{proof}
+(i) We first consider the ideal procedure in which $\hat P$ is replaced by the true
+projection $P_*$. The eigenvalues of $\Sigma_i^P=P_*\Sigma_i P_*$ consist of
+$\{\lambda_{is}:s\notin\text{removed}\}$ and the kept spikes. For the part from
+which the noise spikes are removed, we have
+\[
+\frac{\tr\{(\Sigma_i^P)^2\}}{\{\tr(\Sigma_i^P)\}^2}\to 0
+\]
+from~(S). That is, the projected data meet the condition~\eqref{eq:1.2} of the
+non-spiked model.
+
+(ii) Under the non-spiked model, the geometric representation is recovered, so that
+the consistency of the BC-SVM given by \citet{nakayama2017} is applicable under
+(C3). We use the modified bias term $\kappa_*$ given in Proposition~\ref{prop:1}.
+
+(iii) We replace $P_*$ by $\hat P$. From~(C2) we have $\|\hat P-P_*\|=o_P(1)$.
+Since $\hat P$ is independent of the training data and $x_0$ from the sample
+splitting, we may argue conditionally. Noting that the spiked coordinates of $x$
+are of order $O_P(\sqrt{\theta})$, we have
+\[
+\|(\hat P-P_*)x\|=o_P(\sqrt{\theta}),
+\]
+so that the contribution to the inner products is $o_P(\theta)$. Hence it is
+absorbed into the remainder terms of Lemmas~\ref{lem:1} to~\ref{lem:3} and the
+conclusions of~(i) and~(ii) are preserved.
+
+(iv) From~(C2) and $n_i\to\infty$, the quantity $\hat\eta_{is}$ is relatively
+consistent for $\eta_{is}$. Choosing $\tau_d\to\infty$ such that
+$\tau_d=o(\eta_{is})$ for the directions to be kept, the selection is correct with
+probability tending to one.
+\end{proof}

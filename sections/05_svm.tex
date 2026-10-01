@@ -1,0 +1,157 @@
+\section{Convergence of the hard-margin SVM}
+\label{sec:svm}
+
+\subsection{The reduced primal problem}
+
+We consider the hard-margin linear SVM for the rescaled data $\{u_p\}_{p\in\cI}$:
+\begin{equation}
+\min_{w,b}\ \tfrac12\|w\|^2
+\quad\text{subject to}\quad
+y_p(w^Tu_p+b)\ge 1\quad\text{for all }p\in\cI.
+\label{eq:5.1}
+\end{equation}
+The dual problem is given by
+\begin{equation}
+\max_{\alpha\ge 0}\ F(\alpha,G)=\mathbf{1}^T\alpha-\tfrac12\alpha^TYGY\alpha
+\quad\text{subject to}\quad y^T\alpha=0,
+\label{eq:5.2}
+\end{equation}
+where $Y=\diag(y)$ and $w=\sum_p\alpha_p y_p u_p$.
+
+In this section, we also use the following reduced form of~\eqref{eq:5.1}, in which
+the $d$-dimensional variable $w$ is eliminated. The optimal $w$ belongs to the
+span of $\{u_p\}$, because writing $w=w_\parallel+w_\perp$ we have
+$\|w\|^2=\|w_\parallel\|^2+\|w_\perp\|^2$ while $w^Tu_p=w_\parallel^Tu_p$. Hence we
+may write $w=\sum_p\beta_p u_p$, so that $\|w\|^2=\beta^TG\beta$ and
+$w^Tu_p=(G\beta)_p$. Then~\eqref{eq:5.1} is equivalent to
+\begin{equation}
+\min_{(\beta,b)}\ \tfrac12\beta^TG\beta
+\quad\text{subject to}\quad
+y_p\bigl((G\beta)_p+b\bigr)\ge 1\quad\text{for all }p\in\cI,
+\label{eq:5.3}
+\end{equation}
+which is a problem in $(\beta,b)\in\R^N\times\R$ and refers to the data only
+through $G$. The discriminant function for a new observation $u_0$ is given by
+\begin{equation}
+f(u_0)=w^Tu_0+b=\sum_{p\in\cI}\beta_p\,u_p^Tu_0+b,
+\qquad\beta_p=\alpha_p y_p.
+\label{eq:5.4}
+\end{equation}
+We note that $\beta=Y\alpha$.
+
+\begin{lemma}
+\label{lem:4}
+Assume $G\succ O$. Then $\{u_p\}$ is affinely independent. Moreover, for any
+labelling, \eqref{eq:5.1} and~\eqref{eq:5.3} are feasible and their solutions are
+unique, and the solution of~\eqref{eq:5.2} is unique.
+\end{lemma}
+
+\begin{proof}
+The condition $G\succ O$ is equivalent to the linear independence of $\{u_p\}$,
+because $a^TGa=\|\sum a_p u_p\|^2$ implies $\sum a_p u_p=0$ and hence $a=0$. The
+linear independence implies the affine independence. For affinely independent $N$
+points, there exists $(w,b)$ such that $y_p(w^Tu_p+b)=1$ for all $p$, so that the
+problem is feasible. The objective function $\tfrac12\beta^TG\beta$ is strictly
+convex in $\beta$ from $G\succ O$ and the constraints are convex, and $b$ is
+determined uniquely from the active constraints once $\beta$ is given. Hence the
+solution of~\eqref{eq:5.3} is unique. The dual objective function is strictly
+concave from $YGY\succ O$, so that the solution of~\eqref{eq:5.2} is unique.
+\end{proof}
+
+\subsection{Continuity of the solution map}
+
+In Lemma~\ref{lem:5} below, we investigate how the solution of the optimization
+problem moves when the parameter $G$ moves. We cannot write the solution
+explicitly, because the set of the active constraints changes with $G$. On the
+other hand, what we need is not the differentiability but only the continuity. For
+this purpose we use the maximum theorem of \citet{berge1963}, which we summarize
+in Appendix~\ref{app:A.1} together with its intuitive meaning. Roughly speaking,
+the theorem states that the optimal value moves continuously while the optimal
+solution may jump, but the point to which it jumps always belongs to the solution
+set of the limiting problem. When the solution is unique, this gives the continuity
+of the solution map.
+
+\begin{lemma}
+\label{lem:5}
+Let $\cG_+=\{G\in\R^{N\times N}:G=G^T,\ G\succ O\}$. Then the maps
+$G\mapsto\alpha(G)$ and $G\mapsto(\beta(G),b(G))$ are continuous on $\cG_+$,
+where $\alpha(G)$ denotes the solution of~\eqref{eq:5.2} and $(\beta(G),b(G))$
+denotes the solution of~\eqref{eq:5.3}.
+\end{lemma}
+
+\begin{proof}
+\textit{Step~1.} Let $G_0\in\cG_+$ and $\eta=\lambda_{\min}(G_0)/2$. Since the
+eigenvalues are continuous functions of the matrix, there exists an open
+neighbourhood $U$ of $G_0$ such that $\lambda_{\min}(G)\ge\eta$ for all $G\in U$.
+
+\textit{Step~2.} We give an a priori bound of the dual variable. Since $Y$ is an
+orthogonal matrix, we have $\alpha^TYGY\alpha=\|G^{1/2}Y\alpha\|^2$, so that
+\[
+\alpha^TYGY\alpha\ge\eta\|\alpha\|^2
+\quad\text{for all }G\in U.
+\]
+Together with $\mathbf{1}^T\alpha\le\sqrt{N}\,\|\alpha\|$, we have
+\begin{equation}
+F(\alpha,G)\le\sqrt{N}\,\|\alpha\|-\frac{\eta}{2}\|\alpha\|^2.
+\label{eq:5.5}
+\end{equation}
+Since $\alpha=0$ is feasible and $F(0,G)=0$, the optimal solution satisfies
+$F(\alpha,G)\ge 0$. From~\eqref{eq:5.5} we obtain
+$\|\alpha\|\le 2\sqrt{N}/\eta$, that is,
+\begin{equation}
+\|\alpha\|\le\frac{2\sqrt{N}}{\eta}=:K_0
+\quad\text{for all }G\in U.
+\label{eq:5.6}
+\end{equation}
+We emphasize that $K_0$ does not depend on $G\in U$.
+
+\textit{Step~3.} From~\eqref{eq:5.6}, we may restrict the feasible set of
+\eqref{eq:5.2} to
+\[
+\cA=\{\alpha\ge 0:\ y^T\alpha=0,\ \|\alpha\|\le K_0\}
+\]
+without changing the optimal solution on $U$. The set $\cA$ is compact and does
+not depend on $G$, that is, the feasible correspondence is a constant
+correspondence, which is trivially continuous. On the other hand, $F(\alpha,G)$
+is a polynomial in $(\alpha,G)$ and hence continuous. Thus all the conditions of
+the maximum theorem are met, and the solution correspondence is upper
+hemicontinuous on $U$. Since the solution is a singleton from Lemma~\ref{lem:4},
+the solution map is continuous on $U$ from Corollary~\ref{cor:A.1}. Since $G_0$
+is arbitrary, the map is continuous on $\cG_+$.
+
+\textit{Step~4.} We consider~\eqref{eq:5.3}. The optimal value is bounded above by
+the value at the feasible point given in the proof of Lemma~\ref{lem:4}, which is
+a continuous function of $G$ and hence bounded on $U$, say by $M_U$. Then
+\[
+\tfrac12\beta^TG\beta\le M_U
+\quad\Rightarrow\quad
+\|\beta\|^2\le\frac{2M_U}{\eta}.
+\]
+Moreover, at the optimal solution, at least one constraint is active, since
+otherwise one could shrink $(\beta,b)$ and decrease the objective function. For
+such $p$ we have $|(G\beta)_p+b|=1$, so that
+$|b|\le 1+\|G\|\|\beta\|$. Hence we may restrict the feasible set to a compact set
+which does not depend on $G\in U$, and the same argument as in Step~3 gives the
+continuity.
+\end{proof}
+
+\subsection{Convergence of the solution}
+
+\begin{theorem}
+\label{thm:2}
+Assume \textup{(A1)} to \textup{(A4)} and \textup{(S)}. Then, as $d\to\infty$,
+it holds that
+\[
+\alpha^{(d)}\wto\alpha^*=\alpha(G^*),
+\qquad
+(\beta^{(d)},b^{(d)})\wto(\beta^*,b^*)=(\beta(G^*),b(G^*)),
+\]
+where $G^*$ is the limiting Gram matrix given in Theorem~\ref{thm:1}.
+\end{theorem}
+
+\begin{proof}
+From Theorem~\ref{thm:1} we have $G\wto G^*$ and $P(G^*\succ O)=1$. From
+Lemma~\ref{lem:5}, the maps are continuous on $\cG_+$, so that the set of the
+discontinuity points has measure zero under the limiting distribution. Thus we
+obtain the result from the continuous mapping theorem.
+\end{proof}
